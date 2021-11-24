@@ -1,0 +1,12 @@
+# OLangUTAN programing language
+
+types
+* Required by uni: 
+integer and real
+
+syntax sugar:
+* . <= ;
+* ; <= ,
+
+
+
