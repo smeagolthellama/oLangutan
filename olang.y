@@ -182,10 +182,7 @@ line: stmt STATEMENT_END
     | error
     ;
 
-stmt:stmt_
-     ;
-
-stmt_: subj vrbs 
+stmt: subj vrbs 
      {
 		subjects.pop();
 		yyerror("\033[33mNOTICE\033[39m: previous subject popped.");
