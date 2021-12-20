@@ -24,7 +24,11 @@ struct subject{
 	};
 };
 
-string output;
+typedef union {
+	long long	integer;
+	double	real;
+	char	raw[8];
+}var_memory;
 
 unsigned int next_symbol=1;
 map<string,unsigned int> symbol_table; //when unallocated int is 0. Otherwise, it is a number referrring to a patch of memory.
@@ -99,6 +103,8 @@ stack<subject> subjects;
 %start lines
 
 %right SUBSTMT
+
+%type<name> def asgn
 
 %%
 
@@ -206,7 +212,6 @@ loop: WHILESTART stmt EOQRY stmt;
 
 %%
 int main(int argc,char** argv){
-	
 	yyparse();
 }
 int yyerror(const char* c){

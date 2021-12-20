@@ -5,6 +5,8 @@ YFLAGS:=-dtvg -Wcounterexamples
 CFLAGS:=--std=c++14
 
 all: olang.tab olang.svg
+	git commit -a
+
 olang.tab: olang.tab.o olang.yy.c
 
 %.c: %.tab.c
