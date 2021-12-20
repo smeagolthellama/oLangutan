@@ -250,7 +250,10 @@ int main(int argc,char** argv){
 	yyparse();
 	program=
 #include "olang_header.hpp"
-+variables_declared+program;
++variables_declared+program+"\
+	return 0;\
+}\
+";
 	cout<<program;
 }
 int yyerror(const char* c){
