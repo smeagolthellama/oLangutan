@@ -3,6 +3,8 @@
 types
 * Required by uni: 
 integer and real
+* ideas:
+char is integer. 
 
 syntax sugar:
 * . <= ;

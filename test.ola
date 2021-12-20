@@ -1,0 +1,35 @@
+irven( ez egy comment )
+irven(
+multi
+line
+text
+)
+{var} <= nove. irven( declare var as empty integer <0> )
+{var} <- 41331. irven( assign value to var )
+{ref} (<= {var};<-32). 
+	irven(
+	equiv: {ref}<={var}.{ref}<-123. {var} is also overwritten.
+	)
+[var] token. irven( print var, interpreting bits as if they belonged to a float, result unknown. )
+-{ {var} }. irven(print var as int, result 32)
+-{ _var_ }. irven(print var as char, result space)
+
+se {var} isto {ref} ? irven( test equality of ref and var. because they are coreferences, this will result in true.)
+
+	{ref} <= nove. irven( if ref is the same as var, redeclare ref. var is unaffected.)
+	senek -{ _ref_} .
+
+ke {var} majo 0 es e 
+	{var}<- e {var} neken 1. par.
+	irven(se {var} = 14 es;)
+	senek -{ {var}}.
+par.
+
+{var} ( <- {ref} - 4; token).
+
+irven(
+	var.become<ref.subtract<4>>.output<>;
+	var.become<ref.subtract<4>..output<>>;
+)
+
+LEXING ERROR
