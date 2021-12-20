@@ -25,11 +25,8 @@ struct subject{
 	};
 };
 
-typedef union {
-	long long	integer;
-	double	real;
-	char	raw[8];
-}var_memory;
+string program;
+string variables_declared;
 
 unsigned int next_symbol=1;
 map<string,unsigned int> symbol_table; //when unallocated int is 0. Otherwise, it is a number referrring to a patch of memory.
@@ -154,8 +151,13 @@ def: PBREFERNCE VARNAME
 		if(!subj.writeable){
 			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 		}else{
+			char str[64];
+			snprintf(str,64,"var[%d]=0;index[\"%s\"]=%d;",next_symbol,subj.vname,next_symbol);
+			variables_declared+=str;
 			symbol_table[subj.vname]=next_symbol++;
+
 			$$=subj.vname;
+
 		}
 	}
    ;
@@ -246,6 +248,10 @@ loop: WHILESTART stmt EOQRY stmt;
 %%
 int main(int argc,char** argv){
 	yyparse();
+	program=
+#include "olang_header.hpp"
++variables_declared+program;
+	cout<<program;
 }
 int yyerror(const char* c){
 	fprintf(stderr,"on line %d: %s\n",yylineno ,c);
