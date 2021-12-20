@@ -12,7 +12,7 @@ int yylex();
 extern int yylineno;
 int yyerror(const char* c);
 
-extern enum {INT,REAL,RAW} yyvartype;
+extern enum vartypes {INT,REAL,RAW} yyvartype;
 
 struct subject{
 	bool writeable;// if true, is var; else is number or real.
@@ -168,6 +168,16 @@ asgn: PBVALUE mtprt
 		if(!subj.writeable){
 			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 		}else{
+			program+="cin>>var[index[\"%s\"]]";
+			switch(yyvartype){
+				case(INT):
+				program+=".integer;";break;
+				case(REAL):
+				program+=".real;";break;
+				case(RAW):
+				program+=".raw;";break;
+				
+			}
 		}
 	}
     | PBVALUE stmt
@@ -252,7 +262,7 @@ int main(int argc,char** argv){
 #include "olang_header.hpp"
 +variables_declared+program+"\
 	return 0;\
-}\ \n";
+}\n";
 	cout<<program;
 }
 int yyerror(const char* c){
