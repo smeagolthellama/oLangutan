@@ -153,13 +153,13 @@ nove {
 }
 
 
-[+-]?[0-9]* {
+-?[0-9]* {
 	token("szam");
 	yylval.ival=strtol(yytext,NULL,0);
 	return NUMBER;
 }
 
-[+-]?[0-9]*\.[0-9]* {
+-?[0-9]*\.[0-9]* {
 	token("valos");
 	yylval.dval=strtod(yytext,NULL);
 	return DOUBLE;
