@@ -170,8 +170,6 @@ asgn: PBVALUE mtprt
 	}
     | PBVALUE stmt
     	{
-		subjects.pop();
-		yyerror("\033[33mNOTICE\033[39m: previous subject popped.");
 		subject subj=subjects.top();
 		if(!subj.writeable){
 			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
@@ -181,14 +179,17 @@ asgn: PBVALUE mtprt
     ;
 
 line: stmt STATEMENT_END
-	{
-		subjects.pop();
-		yyerror("\033[33mNOTICE\033[39m: previous subject popped.");
-	}
     | error
     ;
 
-stmt: subj vrbs 
+stmt:stmt_
+     {
+		subjects.pop();
+		yyerror("\033[33mNOTICE\033[39m: previous subject popped.");
+     }
+     ;
+
+stmt_: subj vrbs 
     | subj 
     | BLK lines EOBLK 
     | cond
