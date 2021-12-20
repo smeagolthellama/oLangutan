@@ -252,8 +252,7 @@ int main(int argc,char** argv){
 #include "olang_header.hpp"
 +variables_declared+program+"\
 	return 0;\
-}\
-";
+}\ \n";
 	cout<<program;
 }
 int yyerror(const char* c){
