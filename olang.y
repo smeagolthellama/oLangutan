@@ -183,14 +183,18 @@ line: stmt STATEMENT_END
     ;
 
 stmt:stmt_
+     ;
+
+stmt_: subj vrbs 
      {
 		subjects.pop();
 		yyerror("\033[33mNOTICE\033[39m: previous subject popped.");
      }
-     ;
-
-stmt_: subj vrbs 
     | subj 
+     {
+		subjects.pop();
+		yyerror("\033[33mNOTICE\033[39m: previous subject popped.");
+     }
     | BLK lines EOBLK 
     | cond
     | loop
