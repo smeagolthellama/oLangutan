@@ -5,8 +5,8 @@ line
 text
 )
 {var} <= nove. irven( declare var as empty integer <0> )
-{var} <- 41331. irven( assign value to var )
-.
+{var} <- 41331 . irven( assign value to var )
+
 {ref} (<= {var};<-32). 
 	irven(
 	equiv: {ref}<={var}.{ref}<-123. {var} is also overwritten.

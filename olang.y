@@ -17,6 +17,7 @@ extern enum {INT,REAL,RAW} yyvartype;
 struct subject{
 	bool writeable;// if true, is var; else is number or real.
 	bool readable;
+	enum {T_INT,T_REAL,T_VAR} type;
 	union{
 		long long lval;
 		double dval;
@@ -37,6 +38,7 @@ subject get_subject_from_num(long long l){
 	subject retval;
 	retval.writeable=false;
 	retval.readable=true;
+	retval.type=subject::T_INT;
 	retval.lval=l;
 	return retval;
 }
@@ -45,6 +47,7 @@ subject get_subject_from_real(double d){
 	subject retval;
 	retval.writeable=false;
 	retval.readable=true;
+	retval.type=subject::T_REAL;
 	retval.dval=d;
 	return retval;
 }
@@ -54,6 +57,7 @@ subject get_subject_from_symbol(string name){
 	subject retval;
 	retval.writeable=true;
 	retval.vname=strdup(name.c_str());
+	retval.type=subject::T_VAR;
 	if(symbol_table.find(name)==symbol_table.end()){
 		symbol_table[name]=0;
 		retval.readable=false;
@@ -115,16 +119,29 @@ lines: line
 def: PBREFERNCE VARNAME	
    	{
 		subject subj=subjects.top();
-		if(!subj.writeable){
-			yyerror("semantical error: subject is not writeable.");
-		}
-		else if(symbol_table.find($2)==symbol_table.end()){
-			char error[256];
-			snprintf(error,256,"semantical error: variable '%s' is not defined.",$2);
-			yyerror(error);
-		} else{
-			symbol_table[subj.vname]=symbol_table[$2];
-			$$=subj.vname;
+		switch(subj.type){
+			case subject::T_VAR:
+				if(!subj.writeable){
+					yyerror("semantical error: subject is not writeable.");
+				}
+				else if(symbol_table.find($2)==symbol_table.end()){
+					char error[256];
+					snprintf(error,256,"semantical error: variable '%s' is not defined.",$2);
+					yyerror(error);
+				} else{
+					symbol_table[subj.vname]=symbol_table[$2];
+					$$=subj.vname;
+				}
+				break;
+
+			case subject::T_INT:
+				yyerror("semantical error: cannot assign to NUMBER.");
+				break;
+
+			case subject::T_REAL:
+				yyerror("semantical error: cannot assign to REAL.");
+				break;
+
 		}
 	}
 
