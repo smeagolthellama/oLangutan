@@ -181,6 +181,10 @@ asgn: PBVALUE mtprt
     ;
 
 line: stmt STATEMENT_END
+	{
+		subjects.pop();
+		yyerror("NOTICE: previous subject popped.");
+	}
     | error
     ;
 
