@@ -170,6 +170,7 @@ asgn: PBVALUE mtprt
 	}
     | PBVALUE stmt
     	{
+		subjects.pop();
 		subject subj=subjects.top();
 		if(!subj.writeable){
 			yyerror("semantical error: subject is not writeable.");
