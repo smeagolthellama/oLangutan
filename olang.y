@@ -171,6 +171,7 @@ asgn: PBVALUE mtprt
     | PBVALUE stmt
     	{
 		subjects.pop();
+		yyerror("NOTICE: previous subject popped.");
 		subject subj=subjects.top();
 		if(!subj.writeable){
 			yyerror("semantical error: subject is not writeable.");
