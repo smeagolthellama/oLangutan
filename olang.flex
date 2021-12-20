@@ -19,7 +19,6 @@ void token(const char* name){
 
 %}
 
-%x VAR
 %x COMMENT
 %option noyywrap yylineno
 
@@ -35,23 +34,24 @@ void token(const char* name){
 \{[^} \t\n\r]*?\} {
 	token("int");
 	yyvartype=INT;
+	yylval.name=strdup(yytext+1);
+	yylval.name[strlen(yylval.name)-1]=0;
 	return VARNAME;
 }
 
 \[[^] \t\n\r]*?\] {
 	token("real");
 	yyvartype=REAL;
+	yylval.name=strdup(yytext+1);
+	yylval.name[strlen(yylval.name)-1]=0;
 	return VARNAME;
 }
 _[^_ \t\n\r]*?_ {
 	token("raw data (effectively char)");
 	yyvartype=RAW;
+	yylval.name=strdup(yytext+1);
+	yylval.name[strlen(yylval.name)-1]=0;
 	return VARNAME;
-}
-
-[0-9]* {
-	token("szam");
-	return NUMBER;
 }
 
 "becomen"|"<-" {
@@ -152,12 +152,24 @@ nove {
 	return SUB;
 }
 
+
+[+-]?[0-9]* {
+	token("szam");
+	yylval.ival=strtol(yytext,NULL,0);
+	return NUMBER;
+}
+
+[+-]?[0-9]*\.[0-9]* {
+	token("valos");
+	yylval.dval=strtod(yytext,NULL);
+	return DOUBLE;
+}
 [()] {
 	return yytext[0];
 }
 
 . {
-	printf("[sor: %d oszlop: %d hosz: %d] %s (%s)\n",
+	fprintf(stderr,"[sor: %d oszlop: %d hosz: %d] %s (%s)\n",
 	yylineno, oszlop, yyleng, "\033[31mLEXING ERROR\033[39m" ,yytext);
 	yyerror("\033[31mLEXING ERROR\033[39m");
 }

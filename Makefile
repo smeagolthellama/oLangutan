@@ -1,7 +1,8 @@
-CC:= g++
+CC:= clang++
 LEX:=flex
 YACC:=bison
 YFLAGS:=-dtvg -Wcounterexamples
+CFLAGS:=--std=c++14
 
 all: olang.tab olang.svg
 olang.tab: olang.tab.o olang.yy.c
