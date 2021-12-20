@@ -125,11 +125,11 @@ def: PBREFERNCE VARNAME
 		switch(subj.type){
 			case subject::T_VAR:
 				if(!subj.writeable){
-					yyerror("semantical error: subject is not writeable.");
+					yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 				}
 				else if(symbol_table.find($2)==symbol_table.end()){
 					char error[256];
-					snprintf(error,256,"semantical error: variable '%s' is not defined.",$2);
+					snprintf(error,256,"\033[31msemantical error\033[39m: variable '%s' is not defined.",$2);
 					yyerror(error);
 				} else{
 					symbol_table[subj.vname]=symbol_table[$2];
@@ -138,11 +138,11 @@ def: PBREFERNCE VARNAME
 				break;
 
 			case subject::T_INT:
-				yyerror("semantical error: cannot assign to NUMBER.");
+				yyerror("\033[31msemantical error\033[39m: cannot assign to NUMBER.");
 				break;
 
 			case subject::T_REAL:
-				yyerror("semantical error: cannot assign to REAL.");
+				yyerror("\033[31msemantical error\033[39m: cannot assign to REAL.");
 				break;
 
 		}
@@ -152,7 +152,7 @@ def: PBREFERNCE VARNAME
    	{
 		subject subj=subjects.top();
 		if(!subj.writeable){
-			yyerror("semantical error: subject is not writeable.");
+			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 		}else{
 			symbol_table[subj.vname]=next_symbol++;
 			$$=subj.vname;
@@ -164,7 +164,7 @@ asgn: PBVALUE mtprt
     	{
 		subject subj=subjects.top();
 		if(!subj.writeable){
-			yyerror("semantical error: subject is not writeable.");
+			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 		}else{
 		}
 	}
@@ -174,7 +174,7 @@ asgn: PBVALUE mtprt
 		yyerror("NOTICE: previous subject popped.");
 		subject subj=subjects.top();
 		if(!subj.writeable){
-			yyerror("semantical error: subject is not writeable.");
+			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 		}else{
 		}
 	}
@@ -241,7 +241,7 @@ int main(int argc,char** argv){
 	yyparse();
 }
 int yyerror(const char* c){
-	fprintf(stderr,"error on line %d: %s\n",yylineno ,c);
+	fprintf(stderr,"on line %d: %s\n",yylineno ,c);
 	return 0;
 }
 
