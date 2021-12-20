@@ -10,5 +10,8 @@ syntax sugar:
 * . <= ;
 * ; <= ,
 
+e..par is code block
+* returns value of last line.
+
 
 

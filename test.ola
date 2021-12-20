@@ -11,7 +11,7 @@ text
 	irven(
 	equiv: {ref}<={var}.{ref}<-123. {var} is also overwritten.
 	)
-[var] token. irven( print var, interpreting bits as if they belonged to a float, result unknown. )
+[var]<- token. irven( print var, interpreting bits as if they belonged to a float, result unknown. )
 -{ {var} }. irven(print var as int, result 32)
 -{ _var_ }. irven(print var as char, result space)
 
@@ -21,7 +21,7 @@ se {var} isto {ref} ? irven( test equality of ref and var. because they are core
 	senek -{ _ref_} .
 
 ke {var} majo 0 es e 
-	{var}<- e {var} neken 1.. par.
+	{var}<- e {var} neken 1 . par.
 	irven(se {var} = 14 es;)
 	senek -{ {var}}.
 par.
@@ -33,7 +33,8 @@ par.
 {foo}<-500 .
 5<=noven.
 
-{var} ( <- {ref} - 4; token).
+{var} (<- {ref} - 4; token).
+{a}<-{b}<-{c}.
 
 irven(
 	var.become<ref.subtract<4>>.output<>;

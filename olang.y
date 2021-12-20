@@ -205,8 +205,12 @@ subj: VARNAME	{subjects.push(get_subject_from_symbol($1));}
     ;
 
 vrbs: vrb
-    | '(' vrb SUBSTMT vrbs ')'
+    | '(' verbset ')'
     ;
+
+verbset: vrb
+       | verbset SUBSTMT vrb
+       ;
 
 vrb: def
    | asgn
