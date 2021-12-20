@@ -228,6 +228,7 @@ op: ADD stmt
   ;
 
 proc: PRINT
+    | PRT EOPRT
     ;
 
 prt: PRT stmt EOPRT
