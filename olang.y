@@ -6,7 +6,6 @@ extern int yylineno;
 int yyerror(const char* c);
 
 extern enum {INT,REAL,RAW} yyvartype;
-int yylval;
 %}
 
 %define parse.error verbose
