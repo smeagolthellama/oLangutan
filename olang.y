@@ -35,7 +35,7 @@ unsigned int next_symbol=1;
 map<string,unsigned int> symbol_table; //when unallocated int is 0. Otherwise, it is a number referrring to a patch of memory.
 
 subject get_subject_from_num(long long l){
-	yyerror("\033[33NOTICE\033[39m: subject NUMBER got.");
+	yyerror("\033[33mNOTICE\033[39m: subject NUMBER got.");
 	subject retval;
 	retval.writeable=false;
 	retval.readable=true;
@@ -45,7 +45,7 @@ subject get_subject_from_num(long long l){
 }
 
 subject get_subject_from_real(double d){
-	yyerror("\033[33NOTICE\033[39m: subject REAL got.");
+	yyerror("\033[33mNOTICE\033[39m: subject REAL got.");
 	subject retval;
 	retval.writeable=false;
 	retval.readable=true;
@@ -56,7 +56,7 @@ subject get_subject_from_real(double d){
 
 
 subject get_subject_from_symbol(string name){
-	yyerror("\033[33NOTICE\033[39m: subject VARNAME got.");
+	yyerror("\033[33mNOTICE\033[39m: subject VARNAME got.");
 	subject retval;
 	retval.writeable=true;
 	retval.vname=strdup(name.c_str());
@@ -171,7 +171,7 @@ asgn: PBVALUE mtprt
     | PBVALUE stmt
     	{
 		subjects.pop();
-		yyerror("\033[33NOTICE\033[39m: previous subject popped.");
+		yyerror("\033[33mNOTICE\033[39m: previous subject popped.");
 		subject subj=subjects.top();
 		if(!subj.writeable){
 			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
@@ -183,7 +183,7 @@ asgn: PBVALUE mtprt
 line: stmt STATEMENT_END
 	{
 		subjects.pop();
-		yyerror("\033[33NOTICE\033[39m: previous subject popped.");
+		yyerror("\033[33mNOTICE\033[39m: previous subject popped.");
 	}
     | error
     ;
