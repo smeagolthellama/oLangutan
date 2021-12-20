@@ -35,6 +35,7 @@ unsigned int next_symbol=1;
 map<string,unsigned int> symbol_table; //when unallocated int is 0. Otherwise, it is a number referrring to a patch of memory.
 
 subject get_subject_from_num(long long l){
+	yyerror("NOTICE: subject NUMBER got.");
 	subject retval;
 	retval.writeable=false;
 	retval.readable=true;
@@ -44,6 +45,7 @@ subject get_subject_from_num(long long l){
 }
 
 subject get_subject_from_real(double d){
+	yyerror("NOTICE: subject REAL got.");
 	subject retval;
 	retval.writeable=false;
 	retval.readable=true;
@@ -54,6 +56,7 @@ subject get_subject_from_real(double d){
 
 
 subject get_subject_from_symbol(string name){
+	yyerror("NOTICE: subject VARNAME got.");
 	subject retval;
 	retval.writeable=true;
 	retval.vname=strdup(name.c_str());
