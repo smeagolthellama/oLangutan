@@ -1,4 +1,4 @@
-CC:= g++
+CC:= gcc
 LEX:=flex
 YACC:=bison
 YFLAGS:=-dtvg -Wcounterexamples

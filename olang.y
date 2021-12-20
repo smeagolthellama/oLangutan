@@ -1,19 +1,12 @@
 %{
 #include <stdio.h>
-#include <map>
 
-using namespace std;
-
-extern int yylex();
+int yylex();
 extern int yylineno;
-int yyerror(const char* c){
-	printf("error on line %d: %s\n",yylineno ,c);
-	return 0;
-}
-
+int yyerror(const char* c);
 
 extern enum {INT,REAL,RAW} yyvartype;
-//int yylval;
+int yylval;
 %}
 
 %define parse.error verbose
@@ -115,3 +108,8 @@ loop: WHILESTART stmt EOQRY stmt;
 int main(int argc,char** argv){
 	yyparse();
 }
+int yyerror(const char* c){
+	printf("error on line %d: %s\n",yylineno ,c);
+	return 0;
+}
+
