@@ -122,7 +122,9 @@ asgn: PBVALUE mtprt
 		if(!subj.writeable){
 			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 		}else{
-			program+="cin>>var[index[\"%s\"]]";
+			program+="cin>>var[index[\"";
+			program+=subj.vname;
+			program+="\"]]";
 			switch(yyvartype){
 				case(INT):
 				program+=".integer;";break;
@@ -132,15 +134,39 @@ asgn: PBVALUE mtprt
 				program+=".raw;";break;
 				
 			}
+			program+="\n";
 		}
 	}
     | PBVALUE stmt
     	{
 		subject subj=subjects.top();
+		subject value=$2;
 		if(!subj.writeable){
 			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 		}else{
-			
+			program+=subj.vname;
+			switch(yyvartype){
+				case(INT):
+				program+=".integer";break;
+				case(REAL):
+				program+=".real";break;
+				case(RAW):
+				program+=".raw";break;
+				
+			}
+			program+="=";
+			if(!value.readable){
+				program+="0;";
+				yyerror("\033[31msemantical warning\033[39m: assignment of non-readable value. assuming 0.");
+			}else{
+				switch(value.type){
+					case(subject::T_INT):
+						char str[64];
+						snprintf(str,64,"%d;",value.lval);
+						program+=str;break;
+				
+				}
+			}
 		}
 	}
     ;
