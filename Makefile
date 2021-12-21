@@ -4,10 +4,14 @@ YACC:=bison
 YFLAGS:=-dtvg -Wcounterexamples
 CFLAGS:=--std=c++14
 
-all: olang.tab olang.svg
+all: olang.tab olang.svg hello
 	git commit -a
 
 olang.tab: olang.tab.o olang.yy.c subject.cpp
+
+%.cpp: %.ola olang.tab
+	./olang.tab <$< >$@
+
 
 %.c: %.tab.c
 	mv $^ $@
