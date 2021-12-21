@@ -187,6 +187,8 @@ asgn: PBVALUE mtprt
 
 						}
 				
+					case subject::T_STR:
+						program+=value.str;break;
 				}
 			}
 		}
