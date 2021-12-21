@@ -144,7 +144,9 @@ asgn: PBVALUE mtprt
 		if(!subj.writeable){
 			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 		}else{
-			program+=subj.vname;
+			char str[256];
+			snprintf(str,256,"var[index[\"%s\"]]",subj.vname);
+			program+=str;
 			switch(yyvartype){
 				case(INT):
 				program+=".integer";break;
