@@ -14,6 +14,7 @@ typedef union {
 
 vector<var_memory> var;
 map<string,int> index;
+var_memory null;
 
 int main(){
 
