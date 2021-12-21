@@ -1,5 +1,5 @@
 #include "subject.hpp"
-
+#include <cstring>
 
 subject get_subject_from_num(long long l){
 	yyerror("\033[33mNOTICE\033[39m: subject NUMBER got.");
