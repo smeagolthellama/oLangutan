@@ -162,7 +162,7 @@ asgn: PBVALUE mtprt
 				switch(value.type){
 					case(subject::T_INT):
 						char str[64];
-						snprintf(str,64,"%d;",value.lval);
+						snprintf(str,64,"%lld;",value.lval);
 						program+=str;break;
 				
 				}
