@@ -1,9 +1,10 @@
 %{
+#define VARTYPES
 #include <stdio.h>
 #include "subject.hpp"
 #include "olang.tab.h"
 
-enum vartypes{INT,REAL,RAW} yyvartype;
+vartypes yyvartype;
 
 int oszlop=0;
 int elozosor=0;

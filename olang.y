@@ -13,7 +13,7 @@ int yylex();
 extern int yylineno;
 int yyerror(const char* c);
 
-extern enum vartypes {INT,REAL,RAW} yyvartype;
+extern vartypes yyvartype;
 string program;
 string variables_declared;
 

@@ -28,6 +28,7 @@ subject get_subject_from_symbol(string name){
 	retval.writeable=true;
 	retval.vname=strdup(name.c_str());
 	retval.type=subject::T_VAR;
+	retval.vartype=yyvartype;
 	if(symbol_table.find(name)==symbol_table.end()){
 		symbol_table[name]=0;
 		retval.readable=false;

@@ -5,6 +5,8 @@
 using namespace std;
 
 extern map<string,unsigned int> symbol_table;
+enum vartypes {INT,REAL,RAW};
+extern vartypes yyvartype;
 
 int yyerror(const char* c);
 
@@ -17,6 +19,7 @@ struct subject{
 		double dval;
 		char* vname;
 	};
+	enum vartypes vartype;
 };
 subject get_subject_from_num(long long l);
 subject get_subject_from_real(double d);
