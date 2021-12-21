@@ -96,6 +96,9 @@ def: PBREFERNCE VARNAME
 				yyerror("\033[31msemantical error\033[39m: cannot assign to REAL.");
 				break;
 
+			case subject::T_STR:
+				yyerror("\033[31msemantical error\033[39m: cannot assign to... whatever that is.");
+
 		}
 	}
 
@@ -169,6 +172,18 @@ asgn: PBVALUE mtprt
 					case(subject::T_REAL):
 						snprintf(str,64,"%lf;\n",value.dval);
 						program+=str;break;
+					case(subject::T_VAR):
+						snprintf(str,256,"var[index[\"%s\"]]",value.vname);
+						program+=str;
+						switch(value.vartype){
+						case INT:
+							program+=".integer;\n";break;
+						case REAL:
+							program+=".real;\n";break;
+						case RAW:
+							program+=".raw;\n";break;
+
+						}
 				
 				}
 			}

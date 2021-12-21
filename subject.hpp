@@ -13,11 +13,12 @@ int yyerror(const char* c);
 struct subject{
 	bool writeable;// if true, is var; else is number or real.
 	bool readable;
-	enum {T_INT,T_REAL,T_VAR} type;
+	enum {T_INT,T_REAL,T_VAR,T_STR} type;
 	union{
 		long long lval;
 		double dval;
 		char* vname;
+		char* str;
 	};
 	enum vartypes vartype;
 };
