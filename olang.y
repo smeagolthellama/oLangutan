@@ -160,9 +160,12 @@ asgn: PBVALUE mtprt
 				yyerror("\033[31msemantical warning\033[39m: assignment of non-readable value. assuming 0.");
 			}else{
 				switch(value.type){
+					char str[64];
 					case(subject::T_INT):
-						char str[64];
 						snprintf(str,64,"%lld;",value.lval);
+						program+=str;break;
+					case(subject::T_REAL):
+						snprintf(str,64,"%llf;",value.dval);
 						program+=str;break;
 				
 				}
