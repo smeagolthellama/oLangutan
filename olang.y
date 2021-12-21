@@ -7,6 +7,8 @@
 #include <string>
 #include "subject.hpp"
 
+#define STR_SIZE 1024
+
 using namespace std;
 
 int yylex();
@@ -79,8 +81,8 @@ def: PBREFERNCE VARNAME
 					yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 				}
 				else if(symbol_table.find($2)==symbol_table.end()){
-					char error[256];
-					snprintf(error,256,"\033[31msemantical error\033[39m: variable '%s' is not defined.",$2);
+					char error[STR_SIZE];
+					snprintf(error,STR_SIZE,"\033[31msemantical error\033[39m: variable '%s' is not defined.",$2);
 					yyerror(error);
 				} else{
 					symbol_table[subj.vname]=symbol_table[$2];
@@ -108,8 +110,8 @@ def: PBREFERNCE VARNAME
 		if(!subj.writeable){
 			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 		}else{
-			char str[64];
-			snprintf(str,64,"var[%d].integer=0;index[\"%s\"]=%d;\n",next_symbol,subj.vname,next_symbol);
+			char str[STR_SIZE];
+			snprintf(str,STR_SIZE,"var[%d].integer=0;index[\"%s\"]=%d;\n",next_symbol,subj.vname,next_symbol);
 			variables_declared+=str;
 			symbol_table[subj.vname]=next_symbol++;
 
@@ -147,8 +149,8 @@ asgn: PBVALUE mtprt
 		if(!subj.writeable){
 			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 		}else{
-			char str[256];
-			snprintf(str,256,"var[index[\"%s\"]]",subj.vname);
+			char str[STR_SIZE];
+			snprintf(str,STR_SIZE,"var[index[\"%s\"]]",subj.vname);
 			program+=str;
 			switch(yyvartype){
 				case(INT):
@@ -165,15 +167,15 @@ asgn: PBVALUE mtprt
 				yyerror("\033[31msemantical warning\033[39m: assignment of non-readable value. assuming 0.");
 			}else{
 				switch(value.type){
-					char str[64];
+					char str[STR_SIZE];
 					case(subject::T_INT):
-						snprintf(str,64,"%lld;\n",value.lval);
+						snprintf(str,STR_SIZE,"%lld;\n",value.lval);
 						program+=str;break;
 					case(subject::T_REAL):
-						snprintf(str,64,"%lf;\n",value.dval);
+						snprintf(str,STR_SIZE,"%lf;\n",value.dval);
 						program+=str;break;
 					case(subject::T_VAR):
-						snprintf(str,256,"var[index[\"%s\"]]",value.vname);
+						snprintf(str,STR_SIZE,"var[index[\"%s\"]]",value.vname);
 						program+=str;
 						switch(value.vartype){
 						case INT:
