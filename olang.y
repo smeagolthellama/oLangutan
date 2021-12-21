@@ -106,7 +106,7 @@ def: PBREFERNCE VARNAME
 			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 		}else{
 			char str[64];
-			snprintf(str,64,"var[%d]=0;index[\"%s\"]=%d;\n",next_symbol,subj.vname,next_symbol);
+			snprintf(str,64,"var[%d].integer=0;index[\"%s\"]=%d;\n",next_symbol,subj.vname,next_symbol);
 			variables_declared+=str;
 			symbol_table[subj.vname]=next_symbol++;
 
