@@ -1,0 +1,26 @@
+{h}		( isten nove;becomen 72).
+{elloorld}	( isten nove;becomen 101).
+{w}		( isten nove;becomen 87).
+{space}		( isten nove;becomen 32).
+{newline}	( isten nove;becomen 10).
+
+{h} token.
+{elloorld} (
+	token;
+	becomen {elloorld} kajen 7 ;
+	token;
+	token;
+	becomen {elloorld} kajen 3;
+	token
+).
+{space} token.
+{w} token.
+{elloorld} (
+	-{ };
+	<-{elloorld}+3;-{ };
+	<-{elloorld} neken 6;-{ };
+	<-{elloorld} neken 8;-{ }
+).
+-{ {space}+1 }.
+-{ {newline}}.
+
