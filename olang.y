@@ -165,7 +165,7 @@ asgn: PBVALUE mtprt
 						snprintf(str,64,"%lld;",value.lval);
 						program+=str;break;
 					case(subject::T_REAL):
-						snprintf(str,64,"%llf;",value.dval);
+						snprintf(str,64,"%lf;",value.dval);
 						program+=str;break;
 				
 				}
