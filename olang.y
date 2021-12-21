@@ -5,6 +5,7 @@
 #include <map>
 #include <stack>
 #include <string>
+#include "subject.hpp"
 
 using namespace std;
 
@@ -13,60 +14,11 @@ extern int yylineno;
 int yyerror(const char* c);
 
 extern enum vartypes {INT,REAL,RAW} yyvartype;
-
-struct subject{
-	bool writeable;// if true, is var; else is number or real.
-	bool readable;
-	enum {T_INT,T_REAL,T_VAR} type;
-	union{
-		long long lval;
-		double dval;
-		char* vname;
-	};
-};
-
 string program;
 string variables_declared;
 
 unsigned int next_symbol=1;
 map<string,unsigned int> symbol_table; //when unallocated int is 0. Otherwise, it is a number referrring to a patch of memory.
-
-subject get_subject_from_num(long long l){
-	yyerror("\033[33mNOTICE\033[39m: subject NUMBER got.");
-	subject retval;
-	retval.writeable=false;
-	retval.readable=true;
-	retval.type=subject::T_INT;
-	retval.lval=l;
-	return retval;
-}
-
-subject get_subject_from_real(double d){
-	yyerror("\033[33mNOTICE\033[39m: subject REAL got.");
-	subject retval;
-	retval.writeable=false;
-	retval.readable=true;
-	retval.type=subject::T_REAL;
-	retval.dval=d;
-	return retval;
-}
-
-
-subject get_subject_from_symbol(string name){
-	yyerror("\033[33mNOTICE\033[39m: subject VARNAME got.");
-	subject retval;
-	retval.writeable=true;
-	retval.vname=strdup(name.c_str());
-	retval.type=subject::T_VAR;
-	if(symbol_table.find(name)==symbol_table.end()){
-		symbol_table[name]=0;
-		retval.readable=false;
-	}else{
-		retval.readable=true;
-	}
-	return retval;
-}
-
 stack<subject> subjects;
 
 %}
@@ -77,6 +29,7 @@ stack<subject> subjects;
 	double	dval;
 	long	ival;
 	char	*name;
+	subject	subjct;
 }
 
 %token STATEMENT_END
@@ -108,12 +61,13 @@ stack<subject> subjects;
 
 %right SUBSTMT
 
-%type<name> def asgn
+%type<name>	def asgn
+%type<subjct>	subj stmt lines line vrbs vrb
 
 %%
 
-lines: line
-     | lines line
+lines: line {$$=$1;}
+     | lines line {$$=$2;}
      ;
 
 def: PBREFERNCE VARNAME	
@@ -186,6 +140,7 @@ asgn: PBVALUE mtprt
 		if(!subj.writeable){
 			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 		}else{
+			
 		}
 	}
     ;
@@ -196,24 +151,26 @@ line: stmt STATEMENT_END
 
 stmt: subj vrbs 
      {
+     		$$=$2;
 		subjects.pop();
 		yyerror("\033[33mNOTICE\033[39m: previous subject popped.");
      }
     | subj 
      {
+     		$$=$1;
 		subjects.pop();
 		yyerror("\033[33mNOTICE\033[39m: previous subject popped.");
      }
-    | BLK lines EOBLK 
+    | BLK lines EOBLK {$$=$2;}
     | cond
     | loop
     | prt
     | ELSE stmt
     ;
 
-subj: VARNAME	{subjects.push(get_subject_from_symbol($1));}
-    | NUMBER	{subjects.push(get_subject_from_num($1));}
-    | DOUBLE	{subjects.push(get_subject_from_real($1));}
+subj: VARNAME	{subjects.push($$=get_subject_from_symbol($1));}
+    | NUMBER	{subjects.push($$=get_subject_from_num($1));}
+    | DOUBLE	{subjects.push($$=get_subject_from_real($1));}
     ;
 
 vrbs: vrb

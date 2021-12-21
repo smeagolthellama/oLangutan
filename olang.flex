@@ -1,5 +1,6 @@
 %{
 #include <stdio.h>
+#include "subject.hpp"
 #include "olang.tab.h"
 
 enum vartypes{INT,REAL,RAW} yyvartype;
