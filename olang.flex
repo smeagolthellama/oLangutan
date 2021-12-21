@@ -32,7 +32,7 @@ void token(const char* name){
 	return STATEMENT_END;
 }
 
-\{[^} \t\n\r]*?\} {
+\{[^}\]_ \t\n\r]*?\} {
 	token("int");
 	yyvartype=INT;
 	yylval.name=strdup(yytext+1);
@@ -40,14 +40,14 @@ void token(const char* name){
 	return VARNAME;
 }
 
-\[[^] \t\n\r]*?\] {
+\[[^\]}_ \t\n\r]*?\] {
 	token("real");
 	yyvartype=REAL;
 	yylval.name=strdup(yytext+1);
 	yylval.name[strlen(yylval.name)-1]=0;
 	return VARNAME;
 }
-_[^_ \t\n\r]*?_ {
+_[^_}\] \t\n\r]*?_ {
 	token("raw data (effectively char)");
 	yyvartype=RAW;
 	yylval.name=strdup(yytext+1);

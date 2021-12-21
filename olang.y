@@ -29,7 +29,7 @@ stack<subject> subjects;
 
 %union{
 	double	dval;
-	long	ival;
+	long long	ival;
 	char	*name;
 	subject	subjct;
 }
