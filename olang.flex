@@ -7,7 +7,6 @@ enum vartypes{INT,REAL,RAW} yyvartype;
 
 int oszlop=0;
 int elozosor=0;
-int yyerror(const char* c);
 void token(const char* name){
 	if(elozosor!=yylineno){
 		oszlop=0;
