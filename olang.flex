@@ -20,40 +20,32 @@ void token(const char* name){
 
 %}
 
-%x COMMENT
+%x VAR
 %option noyywrap yylineno
 
 %%
 
 [ \t\n\r] {}
 
+[\[{_] {
+	begin(VAR);
+	return yytext[0];
+}
+
+<VAR>[a-bA-B1-9]*{
+	return VARNAME;
+}
+
+<VAR>[\]}_] {
+	begin(0);
+	return yytext[0];
+}
+
 \. {
 	token("end of statement");
 	return STATEMENT_END;
 }
 
-\{[^}\]_ \t\n\r]*?\} {
-	token("int");
-	yyvartype=INT;
-	yylval.name=strdup(yytext+1);
-	yylval.name[strlen(yylval.name)-1]=0;
-	return VARNAME;
-}
-
-\[[^\]}_ \t\n\r]*?\] {
-	token("real");
-	yyvartype=REAL;
-	yylval.name=strdup(yytext+1);
-	yylval.name[strlen(yylval.name)-1]=0;
-	return VARNAME;
-}
-_[^_}\] \t\n\r]*?_ {
-	token("raw data (effectively char)");
-	yyvartype=RAW;
-	yylval.name=strdup(yytext+1);
-	yylval.name[strlen(yylval.name)-1]=0;
-	return VARNAME;
-}
 
 "becomen"|"<-" {
 	token("ertekadas");
@@ -153,6 +145,15 @@ nove {
 	return SUB;
 }
 
+"frulen"|\* {
+	token("multiplication");
+	return MUL;
+}
+
+"pakalen"|/ {
+	token("division");
+	return DIV;
+}
 
 -?[0-9]* {
 	token("szam");
@@ -165,7 +166,7 @@ nove {
 	yylval.dval=strtod(yytext,NULL);
 	return DOUBLE;
 }
-[()] {
+[()] { //TODO add wrappers
 	return yytext[0];
 }
 
