@@ -69,7 +69,8 @@ stack<subject> subjects;
 %%
 
 lines: line {$$=$1;}
-     | lines line {$$=$2;}
+     | line lines {$$=$1;//+$2; //TODO concatanate
+     }
      ;
 
 def: PBREFERNCE VARNAME	
