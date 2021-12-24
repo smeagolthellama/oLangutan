@@ -19,7 +19,7 @@
 {elloorld} 
 	token.
 {elloorld} 
-	becomen {elloorld} kajen 3.
+	becomen {elloorld} kajen 3 .
 {elloorld} 
 	token.
 {space} token.
@@ -27,11 +27,14 @@
 {elloorld} 
 	-{ };
 {elloorld} 
-	<-{elloorld}+3.{elloorld} -{ }.
+	<-{elloorld}+3 .
+{elloorld} -{ }.
 {elloorld} 
-	<-{elloorld} neken 6.{elloorld} -{ }.
+	<-{elloorld} neken 6 .
+{elloorld} -{ }.
 {elloorld} 
-	<-{elloorld} neken 8.{elloorld} -{ }
+	<-{elloorld} neken 8 .
+{elloorld} -{ }
 -{ {space}+1 }.
 -{ {newline}}.
 
