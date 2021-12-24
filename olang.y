@@ -53,6 +53,7 @@ stack<string> subjects_stack;
 
 %left ADD SUB
 %left MUL DIV
+%right PBVALUE PBREFERNCE
 
 %start program
 
@@ -95,7 +96,7 @@ lvalue: var {subjects_stack.push($1);$$="";}
 rvalue: var {subjects_stack.push($1);$$=$1;}
       | num {subjects_stack.push($1);$$=$1;}
       | expression {subjects_stack.push($1);$$=$1;}
-//      | stmt {subjects_stack.push($1);$$=$1;}
+      | stmt {subjects_stack.push($1);$$=$1;}
       ;
 
 expression: rvalue ADD rvalue {$$=$1+"+"+$3;subjects_stack.pop();subjects_stack.pop();}
