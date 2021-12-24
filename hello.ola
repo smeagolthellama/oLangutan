@@ -9,7 +9,7 @@
 {newline}	esten nove.
 {newline}	becomen 10 .
 
-{h} token.
+_h_ token.
 _elloorld_ 
 	token.
 {elloorld} 
@@ -25,7 +25,7 @@ _elloorld_
 _space_ token.
 _w_ token.
 _elloorld_ 
-	-{ };
+	-{ }.
 {elloorld} 
 	<-{elloorld}+3 .
 _elloorld_ -{ }.
@@ -34,7 +34,8 @@ _elloorld_ -{ }.
 _elloorld_ -{ }.
 {elloorld} 
 	<-{elloorld} neken 8 .
-_elloorld_ -{ }
--{ {space}+1 }.
--{ {newline}}.
+_elloorld_ -{ }.
+{space}<- {space}+1 .
+_space_ -{ }.
+_newline_ -{ }.
 
