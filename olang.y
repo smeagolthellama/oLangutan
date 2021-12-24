@@ -130,7 +130,7 @@ intVar: '{' varname '}' {$$=$2+".integer";};
 
 rawVar: '_' varname '_' {$$=$2+".raw";};
 
-num: NUMBER
+num: NUMBER {$$=$1+"ll";}
    | DOUBLE
    ;
 
