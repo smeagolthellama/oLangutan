@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <stack>
 
 using namespace std;
 
@@ -14,6 +15,11 @@ int yylex();
 unsigned int next_symbol=1;
 map<string,unsigned int> symbol_table; //when unallocated int is 0. Otherwise, it is a number referrring to a patch of memory.
 
+unsigned int line_counter=0;
+#define TMPSTR_SIZE 1024
+char tmpstr[TMPSTR_SIZE];
+
+stack<string> subjects_stack;
 %}
 
 %define api.value.type {string}
@@ -62,9 +68,13 @@ program: lines {
 
 lines: 
      %empty
-     | lines line {$$=$1+$2;};
+     | lines line 
+     {
+     $$=$1+$2;};
 
-line: stmt STATEMENT_END{$$=$1+";";}
+line: stmt STATEMENT_END{
+     snprintf(tmpstr,TMPSTR_SIZE,"\n%d (%d):",line_counter++,yylineno);
+    $$=tmpstr+$1+";";}
     | error
     ;
 
@@ -72,13 +82,13 @@ stmt: chStmt
     | nchStmt
     ;
 
-chStmt: lvalue chOps {$$="subject=\""+$1+"\";"+$2;};
+chStmt: lvalue chOps {$$=$2;subjects_stack.pop();};
 
 nchStmt: rvalue nchOps {$$="subject=\""+$1+"\";"+$2;}
        ;
 
-lvalue: var 
-      | print
+lvalue: var {subjects_stack.push($1);}
+      | print 
       ;
 
 

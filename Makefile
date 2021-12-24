@@ -4,8 +4,9 @@ YACC:=bison
 YFLAGS:=-dtvg -Wcounterexamples
 CFLAGS:=--std=c++14
 
-all: olang.tab hello
+all: olang.tab 
 	git commit -a
+	make hello
 
 olang.tab: olang.tab.o olang.yy.c subject.cpp
 
