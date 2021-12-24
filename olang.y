@@ -84,7 +84,7 @@ stmt: chStmt
 
 chStmt: lvalue chOps {$$=$2;subjects_stack.pop();};
 
-nchStmt: rvalue nchOps {$$="subject=\""+$1+"\";"+$2;}
+nchStmt: rvalue nchOps {$$=$2;subjects_stack.pop();}
        ;
 
 lvalue: var {subjects_stack.push($1);}
@@ -92,16 +92,16 @@ lvalue: var {subjects_stack.push($1);}
       ;
 
 
-rvalue: var
-      | num
-      | expression
+rvalue: var {subjects_stack.push($1);$$=$1;}
+      | num {subjects_stack.push($1);$$=$1;}
+      | expression {subjects_stack.push($1);$$=$1;}
       ;
 
-expression: rvalue ADD rvalue {$$=$1+"+"+$3;}
-	  | rvalue SUB rvalue {$$=$1+"-"+$3;}
-	  | rvalue MUL rvalue {$$=$1+"*"+$3;}
-	  | rvalue DIV rvalue {$$=$1+"/"+$3;}
-	  | '(' rvalue ')' {$$=$1+$2+$3;}
+expression: rvalue ADD rvalue {$$=$1+"+"+$3;subjects_stack.pop();subjects_stack.pop();}
+	  | rvalue SUB rvalue {$$=$1+"-"+$3;subjects_stack.pop();subjects_stack.pop();}
+	  | rvalue MUL rvalue {$$=$1+"*"+$3;subjects_stack.pop();subjects_stack.pop();;}
+	  | rvalue DIV rvalue {$$=$1+"/"+$3;subjects_stack.pop();subjects_stack.pop();}
+	  | '(' rvalue ')' {$$=$1+$2+$3;subjects_stack.pop();}
 	  ;
 
 var: realVar {$$=$1;}
@@ -125,16 +125,16 @@ chOps: pbv
      | pbr
      ;
 
-pbv: PBVALUE rvalue {$$="var[index[subject]]="+$2;};
+pbv: PBVALUE rvalue {$$=subjects_stack.top()+"="+$2;};
 
 pbr: passReal
    | passInt
    | passRaw
    ;
 
-passReal: PBREFERNCE '[' VARNAME ']' {$$="index[subject]="+$3;};
-passInt: PBREFERNCE '{' VARNAME '}' {$$="index[subject]="+$3;};
-passRaw: PBREFERNCE '_' VARNAME '_' {$$="index[subject]="+$3;};
+passReal: PBREFERNCE '[' VARNAME ']' {$$=subjects_stack.top()+"="+$3;};
+passInt: PBREFERNCE '{' VARNAME '}' {$$=subjects_stack.top()+"="+$3;};
+passRaw: PBREFERNCE '_' VARNAME '_' {$$=subjects_stack.top()+"="+$3;};
 
 nchOps: print
       /* | conditional*/
