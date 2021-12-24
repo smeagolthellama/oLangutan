@@ -1,5 +1,3 @@
-R"(
-
 #include <iostream>
 #include <vector>
 #include <map>
@@ -17,5 +15,3 @@ map<string,int> index;
 var_memory null;
 
 int main(){
-
-)"
