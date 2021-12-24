@@ -14,4 +14,13 @@ vector<var_memory> var;
 map<string,int> index;
 var_memory null;
 
+class myPrint{
+	public
+		template<class T>
+		T operator=(T i){
+			cout<<i;
+			return i;
+		}
+} printObj;
+
 int main(){

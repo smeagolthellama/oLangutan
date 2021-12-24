@@ -87,14 +87,15 @@ chStmt: lvalue chOps {$$=$2;subjects_stack.pop();};
 nchStmt: rvalue nchOps {$$=$2;subjects_stack.pop();}
        ;
 
-lvalue: var {subjects_stack.push($1);}
-      | print 
+lvalue: var {subjects_stack.push($1);$$="";}
+      | print {subjects_stack.push("printObj");$$="";}
       ;
 
 
 rvalue: var {subjects_stack.push($1);$$=$1;}
       | num {subjects_stack.push($1);$$=$1;}
       | expression {subjects_stack.push($1);$$=$1;}
+//      | stmt {subjects_stack.push($1);$$=$1;}
       ;
 
 expression: rvalue ADD rvalue {$$=$1+"+"+$3;subjects_stack.pop();subjects_stack.pop();}
