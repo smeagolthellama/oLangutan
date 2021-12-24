@@ -155,7 +155,7 @@ passNew: PBREFERNCE NEWREF
 	snprintf(tmpstr,TMPSTR_SIZE,"%d",var_stack.top());
 	$$=string("index[")+tmpstr+"]="; 
 	snprintf(tmpstr,TMPSTR_SIZE,"%d",nove_value++);
-	$$=$$+tmpstr+";var.push_back();";
+	$$=$$+tmpstr+";var.push_back(null);";
 	}
 
 nchOps: print
