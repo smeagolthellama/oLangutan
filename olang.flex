@@ -33,7 +33,7 @@ void token(const char* name){
 	return yytext[0];
 }
 
-<VAR>[a-bA-B1-9]* {
+<VAR>[a-zA-Z1-9]+ {
 	token("variable");
 	yyerror("variable:");
 	yyerror(yytext);
