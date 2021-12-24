@@ -28,16 +28,17 @@ void token(const char* name){
 [ \t\n\r] {}
 
 [\[{_] {
-	begin(VAR);
+	BEGIN(VAR);
 	return yytext[0];
 }
 
-<VAR>[a-bA-B1-9]*{
+<VAR>[a-bA-B1-9]* {
+	token("variable");
 	return VARNAME;
 }
 
 <VAR>[\]}_] {
-	begin(0);
+	BEGIN(0);
 	return yytext[0];
 }
 
@@ -150,23 +151,23 @@ nove {
 	return MUL;
 }
 
-"pakalen"|/ {
+"pakalen"|\/ {
 	token("division");
 	return DIV;
 }
 
 -?[0-9]* {
 	token("szam");
-	yylval.ival=strtol(yytext,NULL,0);
+	yylval=yytext;
 	return NUMBER;
 }
 
 -?[0-9]*\.[0-9]* {
 	token("valos");
-	yylval.dval=strtod(yytext,NULL);
+	yylval=yytext;
 	return DOUBLE;
 }
-[()] { //TODO add wrappers
+[()] { 
 	return yytext[0];
 }
 
