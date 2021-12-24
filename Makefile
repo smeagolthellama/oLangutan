@@ -2,7 +2,7 @@ CC:= clang++
 LEX:=flex
 YACC:=bison
 YFLAGS:=-dtvg -Wcounterexamples
-CFLAGS:=--std=c++14
+CFLAGS:=--std=c++14 -g -Wall -Wextra
 
 all: olang.tab 
 	git commit -a
