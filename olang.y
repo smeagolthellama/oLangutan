@@ -92,7 +92,7 @@ nchStmt: rvalue nchOps {$$=$2;subjects_stack.pop();var_stack.pop();}
        ;
 
 lvalue: var {subjects_stack.push($1);$$="";}
-      | print {subjects_stack.push("printObj");var_stack.push(-1);$$="";}
+      | printopts {subjects_stack.push("printObj");var_stack.push(-1);$$="";}
       ;
 
 
@@ -169,7 +169,7 @@ nchOps: print
       /* | conditional*/
       ;
 
-print: printopts {$$="printObj="+subjects_stack.top();}
+print: printopts {$$=string("printObj=")+subjects_stack.top();}
      ;
 printopts: PRINT
 	 | PRT EOPRT
