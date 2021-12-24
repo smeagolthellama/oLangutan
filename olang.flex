@@ -29,6 +29,7 @@ void token(const char* name){
 
 [\[{_] {
 	BEGIN(VAR);
+	yyerror("starting variable.");
 	return yytext[0];
 }
 
@@ -39,6 +40,7 @@ void token(const char* name){
 
 <VAR>[\]}_] {
 	BEGIN(0);
+	yyerror("ending variable.");
 	return yytext[0];
 }
 
