@@ -1,9 +1,9 @@
-{h}		isten nove.
+{h}		esten nove.
 {h}		becomen 72.
-{elloorld}	( isten nove;becomen 101).
-{w}		( isten nove;becomen 87).
-{space}		( isten nove;becomen 32).
-{newline}	( isten nove;becomen 10).
+{elloorld}	( esten nove;becomen 101).
+{w}		( esten nove;becomen 87).
+{space}		( esten nove;becomen 32).
+{newline}	( esten nove;becomen 10).
 
 {h} token.
 {elloorld} (

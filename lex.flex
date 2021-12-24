@@ -47,7 +47,7 @@ _[^_ \t\n\r]*?_ {
 	token("ertekadas");
 }
 
-"isten"|"<=" {
+"esten"|"<=" {
 	token("referencia");
 }
 

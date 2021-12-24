@@ -53,7 +53,7 @@ void token(const char* name){
 	return PBVALUE;
 }
 
-"isten"|"<=" {
+"esten"|"<=" {
 	token("referencia");
 	return PBREFERNCE;
 }
