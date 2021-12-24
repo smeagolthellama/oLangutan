@@ -116,7 +116,7 @@ varname: VARNAME {
 		symbol_table[ $1 ]=next_symbol++;
 	}
 	snprintf(tmpstr,TMPSTR_SIZE,"%d",symbol_table[$1]);
-	$$="var[index["+$1+"]]";
+	$$=string("var[index[")+tmpstr+"]]";
 
 };
 
