@@ -1,3 +1,3 @@
-{a}<=nove.                               
-{a}<-7236284523806222664 .
-_a_ token.
+{a}<=nove.			irven(allocate variable)
+{a}<-7236284523806222664 .	irven(assign value [[calculated by calculate.ola]] to variable, as int.)
+_a_ token.			irven(print variable as raw bytes. Should result in "Hi World", but because of endianness, might not.)

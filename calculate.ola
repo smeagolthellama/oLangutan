@@ -8,5 +8,7 @@
 {a}<-{a}+256*256*256*256*256*256*108 .
 {a}<-{a}+256*256*256*256*256*256*256*100 .
 
+irven( calculates the values needed to get the string "Hi World" as an integer.. Prints said integer. prints the string.)
+
 {a} token.
 _a_ token.
