@@ -10,32 +10,21 @@
 {newline}	becomen 10 .
 
 _h_ token.
-_elloorld_ 
-	token.
-{elloorld} 
-	becomen {elloorld} kajen 7 .
-_elloorld_ 
-	token.
-_elloorld_ 
-	token.
-{elloorld} 
-	becomen {elloorld} kajen 3 .
-_elloorld_ 
-	token.
-_space_ token.
-_w_ token.
-_elloorld_ 
-	-{ }.
-{elloorld} 
-	<-{elloorld}+3 .
-_elloorld_ -{ }.
-{elloorld} 
-	<-{elloorld} neken 6 .
-_elloorld_ -{ }.
-{elloorld} 
-	<-{elloorld} neken 8 .
-_elloorld_ -{ }.
-{space}<- {space}+1 .
-_space_ -{ }.
-_newline_ -{ }.
-
+_elloorld_	token.
+{elloorld}	becomen {elloorld} kajen 7 .
+_elloorld_	token.
+_elloorld_	token.
+{elloorld}	becomen {elloorld} kajen 3 .
+_elloorld_	token.
+_space_		token.
+_w_		token.
+_elloorld_ 	-{ }.
+{elloorld} 	<-{elloorld}+3 .
+_elloorld_ 	-{ }.
+{elloorld} 	<-{elloorld} neken 6 .
+_elloorld_ 	-{ }.
+{elloorld} 	<-{elloorld} neken 8 .
+_elloorld_ 	-{ }.
+{space}		<- {space}+1 .
+_space_ 	-{ }.
+_newline_ 	-{ }.
