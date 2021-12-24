@@ -99,7 +99,7 @@ lvalue: var {subjects_stack.push($1);$$="";}
 rvalue: var {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
       | num {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
       | expression {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
-      | printopts {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
+      | printopts {subjects_stack.push("printObj");var_stack.push(-1);$$="printObj";}
       ;
 
 expression: rvalue ADD rvalue {$$=$1+"+"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
