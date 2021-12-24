@@ -35,6 +35,8 @@ void token(const char* name){
 
 <VAR>[a-bA-B1-9]* {
 	token("variable");
+	yyerror("variable:");
+	yyerror(yytext);
 	return VARNAME;
 }
 
