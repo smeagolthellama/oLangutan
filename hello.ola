@@ -8,8 +8,7 @@
 {space}		becomen 32 .
 {newline}	esten nove.
 {newline}	becomen 10 .
-
-_h_ token.
+_h_		token.
 _elloorld_	token.
 {elloorld}	becomen {elloorld} kajen 7 .
 _elloorld_	token.
