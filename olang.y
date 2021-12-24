@@ -127,7 +127,7 @@ chOps: pbv
      | pbr
      ;
 
-pbv: PBVALUE rvalue {$$=subjects_stack.top()+"="+$2;};
+pbv: PBVALUE rvalue {subjects_stack.pop();$$=subjects_stack.top()+"="+$2;;};
 
 pbr: passReal
    | passInt
