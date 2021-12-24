@@ -111,7 +111,14 @@ var: realVar {$$=$1;}
    | rawVar {$$=$1;}
    ;
 
-varname: VARNAME {$$="var[index[\""+$1+"\"]]";};
+varname: VARNAME {
+	if(symbol_table.find($1)==symbol_table.end()){
+		symbol_table[ $1 ]=next_symbol++;
+	}
+	snprintf(tmpstr,TMPSTR_SIZE,"%d",symbol_table[$1]);
+	$$="var[index["+$1+"]]";
+
+};
 
 realVar: '[' varname ']' {$$=$2+".real";};
 
