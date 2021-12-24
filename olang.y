@@ -74,11 +74,13 @@ stmt: chStmt
 
 chStmt: lvalue chOps {$$="subject=\""+$1+"\";"+$2;};
 
-nchStmt: lvalue nchOps {$$="subject=\""+$1+"\";"+$2;}
-       | rvalue nchOps  {$$="subject=\""+$1+"\";"+$2;}
+nchStmt: rvalue nchOps {$$="subject=\""+$1+"\";"+$2;}
        ;
 
-lvalue: var ;
+lvalue: var 
+      | print
+      ;
+
 
 rvalue: var
       | num
