@@ -146,7 +146,7 @@ passReal: PBREFERNCE '[' VARNAME ']' {$$=subjects_stack.top()+"="+$3;};
 passInt: PBREFERNCE '{' VARNAME '}' {$$=subjects_stack.top()+"="+$3;};
 passRaw: PBREFERNCE '_' VARNAME '_' {$$=subjects_stack.top()+"="+$3;};
 
-passNew: PBREFERNCE NEWREF {/*TODO*/ }
+passNew: PBREFERNCE NEWREF {/*TODO*/$$=""; }
 
 nchOps: print
       /* | conditional*/
