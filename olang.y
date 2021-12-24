@@ -139,7 +139,7 @@ chOps: pbv
      | pbr
      ;
 
-pbv: PBVALUE rvalue {subjects_stack.pop();var_stack.pop();$$=subjects_stack.top()+"="+$2;;};
+pbv: PBVALUE rvalue {yyerror(subjects_stack.top().c_str());subjects_stack.pop();yyerror(subjects_stack.top().c_str());var_stack.pop();$$=subjects_stack.top()+"="+$2;};
 
 pbr: PBREFERNCE brackets VARNAME brackets {
 	if(var_stack.top()==-1){
