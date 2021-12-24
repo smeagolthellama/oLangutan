@@ -2,6 +2,8 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <cstring>
+
 using namespace std;
 
 typedef union {
@@ -21,24 +23,26 @@ class myPrint{
 			cout<<i;
 			return i;
 		}
-} printObj;
 
-template<class T>
-myPrint operator=(T t,myPrint &prt){
-	cin>>t;
-	return prt;
-}
-
-myPrint operator=(char* t,myPrint &prt){
-	int i;
-	for(i=0;i<8;i++){
-		cin.get(t[i]);
-		if(t[i]=='\n'){
-			t[i]=0;
-			return prt;
+		template<class T>
+		operator T() const{
+			T t;
+			cin>>t;
+			return t;
 		}
-	}
-	return prt;
-}
+
+		operator char*() const{
+			char t[8];
+			int i;
+			for(i=0;i<8;i++){
+				cin>>t[i];
+				if(t[i]=='\n'){
+					t[i]=0;
+				}
+				return t;
+			}
+			return strdup(t);
+		}
+} printObj;
 
 int main(){

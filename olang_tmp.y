@@ -112,7 +112,7 @@ def: PBREFERNCE VARNAME
 			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 		}else{
 			char str[STR_SIZE];
-			snprintf(str,STR_SIZE,"var.push_back(null);var[%d].integer=0;index[\"%s\"]=%d;\n",next_symbol-1,subj.vname,next_symbol-1);
+			snprintf(str,STR_SIZE,"var.push_back(null);var[%d].integer=0;varindex[\"%s\"]=%d;\n",next_symbol-1,subj.vname,next_symbol-1);
 			variables_declared+=str;
 			symbol_table[subj.vname]=next_symbol++;
 
@@ -128,7 +128,7 @@ asgn: PBVALUE mtprt
 		if(!subj.writeable){
 			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 		}else{
-			program+="cin>>var[index[\"";
+			program+="cin>>var[varindex[\"";
 			program+=subj.vname;
 			program+="\"]]";
 			switch(yyvartype){
@@ -151,7 +151,7 @@ asgn: PBVALUE mtprt
 			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
 		}else{
 			char str[STR_SIZE];
-			snprintf(str,STR_SIZE,"var[index[\"%s\"]]",subj.vname);
+			snprintf(str,STR_SIZE,"var[varindex[\"%s\"]]",subj.vname);
 			program+=str;
 			switch(yyvartype){
 				case(INT):
@@ -176,7 +176,7 @@ asgn: PBVALUE mtprt
 						snprintf(str,STR_SIZE,"%lf;\n",value.dval);
 						program+=str;break;
 					case(subject::T_VAR):
-						snprintf(str,STR_SIZE,"var[index[\"%s\"]]",value.vname);
+						snprintf(str,STR_SIZE,"var[varindex[\"%s\"]]",value.vname);
 						program+=str;
 						switch(value.vartype){
 						case INT:
