@@ -75,7 +75,7 @@ lines:
 
 line: stmt STATEMENT_END{
      snprintf(tmpstr,TMPSTR_SIZE,"\n%d (%d):",line_counter++,yylineno);
-    $$=tmpstr+$1+";";}
+    $$=/*tmpstr+*/$1+";";}
     | error {$$="";}
     ;
 
