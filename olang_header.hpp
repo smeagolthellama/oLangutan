@@ -15,7 +15,7 @@ map<string,int> index;
 var_memory null;
 
 class myPrint{
-	public
+	public:
 		template<class T>
 		T operator=(T i){
 			cout<<i;
