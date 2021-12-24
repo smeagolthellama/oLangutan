@@ -39,7 +39,7 @@ class myPrint{
 				if(t[i]=='\n'){
 					t[i]=0;
 				}
-				return t;
+				return strdup(t);
 			}
 			return strdup(t);
 		}
