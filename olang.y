@@ -96,14 +96,14 @@ lvalue: var {subjects_stack.push($1);$$="";}
 rvalue: var {subjects_stack.push($1);$$=$1;}
       | num {subjects_stack.push($1);$$=$1;}
       | expression {subjects_stack.push($1);$$=$1;}
-      | stmt {subjects_stack.push($1);$$=$1;}
       ;
 
 expression: rvalue ADD rvalue {$$=$1+"+"+$3;subjects_stack.pop();subjects_stack.pop();}
 	  | rvalue SUB rvalue {$$=$1+"-"+$3;subjects_stack.pop();subjects_stack.pop();}
 	  | rvalue MUL rvalue {$$=$1+"*"+$3;subjects_stack.pop();subjects_stack.pop();;}
 	  | rvalue DIV rvalue {$$=$1+"/"+$3;subjects_stack.pop();subjects_stack.pop();}
-	  | '(' rvalue ')' {$$=$1+$2+$3;subjects_stack.pop();}
+	  | '(' stmt ')' {$$=$1+$2+$3;}
+	  | '(' expression ')' {$$=$1+$2+$3;subjects_stack.pop();}
 	  ;
 
 var: realVar {$$=$1;}
