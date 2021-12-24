@@ -37,6 +37,7 @@ void token(const char* name){
 	token("variable");
 	yyerror("variable:");
 	yyerror(yytext);
+	yylval=yytext;
 	return VARNAME;
 }
 
