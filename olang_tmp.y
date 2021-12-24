@@ -3,18 +3,41 @@
 #include <cstring>
 #include <iostream>
 #include <map>
+#include <stack>
 #include <string>
+#include "subject.hpp"
+
+#define STR_SIZE 1024
 
 using namespace std;
 
+int yylex();
+extern int yylineno;
+int yyerror(const char* c);
+
+extern vartypes yyvartype;
+string program;
+string variables_declared;
+
+unsigned int next_symbol=1;
+map<string,unsigned int> symbol_table; //when unallocated int is 0. Otherwise, it is a number referrring to a patch of memory.
+stack<subject> subjects;
+
 %}
 
-%define api.value.type {string}
+%define parse.error verbose
+
+%union{
+	double	dval;
+	long long	ival;
+	char	*name;
+	subject	subjct;
+}
 
 %token STATEMENT_END
-%token VARNAME
-%token NUMBER
-%token DOUBLE
+%token <name> VARNAME
+%token <ival> NUMBER
+%token <dval> DOUBLE
 %token PBVALUE
 %token PBREFERNCE
 %token IFSTART
@@ -35,73 +58,223 @@ using namespace std;
 %token SUBSTMT
 %token ADD
 %token SUB
-%token MUL
-%token DIV
 
-%start program
+%start lines
+
+%right SUBSTMT
+
+%type<name>	def asgn
+%type<subjct>	subj stmt lines line vrbs vrb
 
 %%
 
+lines: line {$$=$1;}
+     | line lines {$$=$1;//+$2; //TODO concatanate
+     }
+     ;
 
-program: lines {/*TODO: output program.*/};
+def: PBREFERNCE VARNAME	
+   	{
+		subject subj=subjects.top();
+		switch(subj.type){
+			case subject::T_VAR:
+				if(!subj.writeable){
+					yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
+				}
+				else if(symbol_table.find($2)==symbol_table.end()){
+					char error[STR_SIZE];
+					snprintf(error,STR_SIZE,"\033[31msemantical error\033[39m: variable '%s' is not defined.",$2);
+					yyerror(error);
+				} else{
+					symbol_table[subj.vname]=symbol_table[$2];
+					$$=subj.vname;
+				}
+				break;
 
-lines: 
-     %empty
-     | lines line{/*TODO: concatanate.*/};
+			case subject::T_INT:
+				yyerror("\033[31msemantical error\033[39m: cannot assign to NUMBER.");
+				break;
 
-line: stmt STATEMENT_END{/*TODO: concatanate.*/}
+			case subject::T_REAL:
+				yyerror("\033[31msemantical error\033[39m: cannot assign to REAL.");
+				break;
+
+			case subject::T_STR:
+				yyerror("\033[31msemantical error\033[39m: cannot assign to... whatever that is.");
+
+		}
+	}
+
+   | PBREFERNCE NEWREF
+   	{
+		subject subj=subjects.top();
+		if(!subj.writeable){
+			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
+		}else{
+			char str[STR_SIZE];
+			snprintf(str,STR_SIZE,"var.push_back(null);var[%d].integer=0;index[\"%s\"]=%d;\n",next_symbol-1,subj.vname,next_symbol-1);
+			variables_declared+=str;
+			symbol_table[subj.vname]=next_symbol++;
+
+			$$=subj.vname;
+
+		}
+	}
+   ;
+
+asgn: PBVALUE mtprt
+    	{
+		subject subj=subjects.top();
+		if(!subj.writeable){
+			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
+		}else{
+			program+="cin>>var[index[\"";
+			program+=subj.vname;
+			program+="\"]]";
+			switch(yyvartype){
+				case(INT):
+				program+=".integer;";break;
+				case(REAL):
+				program+=".real;";break;
+				case(RAW):
+				program+=".raw;";break;
+				
+			}
+			program+="\n";
+		}
+	}
+    | PBVALUE stmt
+    	{
+		subject subj=subjects.top();
+		subject value=$2;
+		if(!subj.writeable){
+			yyerror("\033[31msemantical error\033[39m: subject is not writeable.");
+		}else{
+			char str[STR_SIZE];
+			snprintf(str,STR_SIZE,"var[index[\"%s\"]]",subj.vname);
+			program+=str;
+			switch(yyvartype){
+				case(INT):
+				program+=".integer";break;
+				case(REAL):
+				program+=".real";break;
+				case(RAW):
+				program+=".raw";break;
+				
+			}
+			program+="=";
+			if(!value.readable){
+				program+="0;";
+				yyerror("\033[31msemantical warning\033[39m: assignment of non-readable value. assuming 0.");
+			}else{
+				switch(value.type){
+					char str[STR_SIZE];
+					case(subject::T_INT):
+						snprintf(str,STR_SIZE,"%lld;\n",value.lval);
+						program+=str;break;
+					case(subject::T_REAL):
+						snprintf(str,STR_SIZE,"%lf;\n",value.dval);
+						program+=str;break;
+					case(subject::T_VAR):
+						snprintf(str,STR_SIZE,"var[index[\"%s\"]]",value.vname);
+						program+=str;
+						switch(value.vartype){
+						case INT:
+							program+=".integer;\n";break;
+						case REAL:
+							program+=".real;\n";break;
+						case RAW:
+							program+=".raw;\n";break;
+
+						}
+				
+					case subject::T_STR:
+						program+=value.str;break;
+				}
+			}
+		}
+	}
+    ;
+
+line: stmt STATEMENT_END
     | error
     ;
 
-stmt: chStmt
-    | nchStmt
+stmt: subj vrbs 
+     {
+     		$$=$2;
+		subjects.pop();
+		yyerror("\033[33mNOTICE\033[39m: previous subject popped.");
+     }
+    | subj 
+     {
+     		$$=$1;
+		subjects.pop();
+		yyerror("\033[33mNOTICE\033[39m: previous subject popped.");
+     }
+    | BLK lines EOBLK {$$=$2;}
+    | cond
+    | loop
+    | prt
+    | ELSE stmt
     ;
 
-chStmt: lvalue chOps {/*subject=$1;$2;*/};
+subj: VARNAME	{subjects.push($$=get_subject_from_symbol($1));}
+    | NUMBER	{subjects.push($$=get_subject_from_num($1));}
+    | DOUBLE	{subjects.push($$=get_subject_from_real($1));}
+    ;
 
-nchStmt: lvalue nchOps
-       | rvalue nchOps
+vrbs: vrb
+    | '(' verbset ')'
+    ;
+
+verbset: vrb
+       | verbset SUBSTMT vrb
        ;
 
-lvalue: var ;
-
-rvalue: var
-      | num
-      | expression
-      ;
-
-expression: rvalue expOp rvalue {$$=$1+$2+$3;}
-	  | '(' rvalue ')' {$$=$1+$2+$3;}
-	  ;
-
-var: realVar
-   | intVar
-   | rawVar
+vrb: def
+   | asgn
+   | proc
+   | op
    ;
 
-realVar: '[' VARNAME ']' {$$=$2+".real";};
+op: ADD stmt
+  | SUB stmt
+  | AND stmt
+  | OR stmt
+  | EQU stmt
+  | GRT stmt
+  | NOT stmt
+  ;
 
-intVar: '{' VARNAME '}' {$$=$2+".integer";};
+proc: PRINT
+    | PRT EOPRT
+    ;
 
-rawVar: '_' VARNAME '_' {$$=$2+".raw";};
-
-num: NUMBER
-   | DOUBLE
+prt: PRT stmt EOPRT
    ;
 
 
-expOp: add 
-     | sub 
-     | mul
-     | div
+mtprt: PRINT
+     | PRT EOPRT
      ;
 
-add: ADD {$$='+';};
+cond: IFSTART stmt EOQRY stmt;
 
-sub: SUB {$$="-";};
-
-mul: MUL {$$="*";};
-
-div: DIV {$$="/";};
+loop: WHILESTART stmt EOQRY stmt;
 
 %%
+int main(int argc,char** argv){
+	yyparse();
+	program=
+#include "olang_header.hpp"
++variables_declared+program+"\
+	return 0;\
+}\n";
+	cout<<program;
+}
+int yyerror(const char* c){
+	fprintf(stderr,"on line %d: %s\n",yylineno ,c);
+	return 0;
+}
+
