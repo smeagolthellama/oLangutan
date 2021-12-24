@@ -10,22 +10,28 @@
 {newline}	becomen 10 .
 
 {h} token.
-{elloorld} (
-	token;
-	becomen {elloorld} kajen 7 ;
-	token;
-	token;
-	becomen {elloorld} kajen 3;
-	token
-).
+{elloorld} 
+	token.
+{elloorld} 
+	becomen {elloorld} kajen 7 .
+{elloorld} 
+	token.
+{elloorld} 
+	token.
+{elloorld} 
+	becomen {elloorld} kajen 3.
+{elloorld} 
+	token.
 {space} token.
 {w} token.
-{elloorld} (
+{elloorld} 
 	-{ };
-	<-{elloorld}+3;-{ };
-	<-{elloorld} neken 6;-{ };
-	<-{elloorld} neken 8;-{ }
-).
+{elloorld} 
+	<-{elloorld}+3.{elloorld} -{ }.
+{elloorld} 
+	<-{elloorld} neken 6.{elloorld} -{ }.
+{elloorld} 
+	<-{elloorld} neken 8.{elloorld} -{ }
 -{ {space}+1 }.
 -{ {newline}}.
 
