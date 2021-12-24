@@ -145,7 +145,7 @@ nchOps: print
       /* | conditional*/
       ;
 
-print: printopts {}
+print: printopts {$$="printObj="+subjects_stack.top();}
      ;
 printopts: PRINT
 	 | PRT EOPRT
