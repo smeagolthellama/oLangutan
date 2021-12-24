@@ -29,21 +29,21 @@ void token(const char* name){
 
 [\[{_] {
 	BEGIN(VAR);
-	yyerror("starting variable.");
+//	yyerror("starting variable.");
 	return yytext[0];
 }
 
 <VAR>[a-zA-Z1-9]+ {
 	token("variable");
-	yyerror("variable:");
-	yyerror(yytext);
+//	yyerror("variable:");
+//	yyerror(yytext);
 	yylval=yytext;
 	return VARNAME;
 }
 
 <VAR>[\]}_] {
 	BEGIN(0);
-	yyerror("ending variable.");
+//	yyerror("ending variable.");
 	return yytext[0];
 }
 
