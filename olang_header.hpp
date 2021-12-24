@@ -23,4 +23,22 @@ class myPrint{
 		}
 } printObj;
 
+template<class T>
+myPrint operator=(T t,myPrint &prt){
+	cin>>t;
+	return prt;
+}
+
+myPrint operator=(char* t,myPrint &prt){
+	int i;
+	for(i=0;i<8;i++){
+		cin.get(t[i]);
+		if(t[i]=='\n'){
+			t[i]=0;
+			return prt;
+		}
+	}
+	return prt;
+}
+
 int main(){
