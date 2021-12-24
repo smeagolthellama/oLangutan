@@ -13,7 +13,7 @@ typedef union {
 }var_memory;
 
 vector<var_memory> var;
-map<int,int> index;
+map<int,int> varindex;
 var_memory null;
 
 class myPrint{
