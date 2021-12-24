@@ -99,6 +99,7 @@ lvalue: var {subjects_stack.push($1);$$="";}
 rvalue: var {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
       | num {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
       | expression {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
+      | printopts {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
       ;
 
 expression: rvalue ADD rvalue {$$=$1+"+"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
@@ -120,7 +121,7 @@ varname: VARNAME {
 	}
 	var_stack.push(symbol_table[$1]);
 	snprintf(tmpstr,TMPSTR_SIZE,"%d",symbol_table[$1]);
-	$$=string("var[varindex[")+tmpstr+"]]";
+	$$=string("var[index[")+tmpstr+"]]";
 
 };
 
@@ -148,7 +149,7 @@ pbr: PBREFERNCE brackets VARNAME brackets {
 	if(symbol_table.find($3)==symbol_table.end()){
 		yyerror("can't pass from nonexistent variable.");
 	}else{
-		snprintf(tmpstr,TMPSTR_SIZE,"varindex[%d]=%d",var_stack.top(),symbol_table[$3]);
+		snprintf(tmpstr,TMPSTR_SIZE,"index[%d]=%d",var_stack.top(),symbol_table[$3]);
 	}
 	}
 }
@@ -159,7 +160,7 @@ brackets: '[' | '{' | '_' | '}' | ']';
 passNew: PBREFERNCE NEWREF 
        {
 	snprintf(tmpstr,TMPSTR_SIZE,"%d",var_stack.top());
-	$$=string("varindex[")+tmpstr+"]="; 
+	$$=string("index[")+tmpstr+"]="; 
 	snprintf(tmpstr,TMPSTR_SIZE,"%d",nove_value++);
 	$$=$$+tmpstr+";var.push_back(null);";
 	}
