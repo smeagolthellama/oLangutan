@@ -140,12 +140,6 @@ chOps: pbv
 
 pbv: PBVALUE rvalue {subjects_stack.pop();var_stack.pop();$$=subjects_stack.top()+"="+$2;;};
 
-pbr: passReal
-   | passInt
-   | passRaw
-   | passNew
-   ;
-
 pbr: PBREFERNCE brackets VARNAME brackets {
 	if(var_stack.top()==-1){
 		yyerror("can't pass by reference to non-variable.");
@@ -158,13 +152,9 @@ pbr: PBREFERNCE brackets VARNAME brackets {
 	}
 	}
 }
+   | passNew;
 
 brackets: '[' | '{' | '_' | '}' | ']';
-
-
-passReal: PBREFERNCE '[' VARNAME ']' {$$=subjects_stack.top()+"="+$3;};
-passInt: PBREFERNCE '{' VARNAME '}' {$$=subjects_stack.top()+"="+$3;};
-passRaw: PBREFERNCE '_' VARNAME '_' {$$=subjects_stack.top()+"="+$3;};
 
 passNew: PBREFERNCE NEWREF 
        {
