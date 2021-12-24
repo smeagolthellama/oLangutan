@@ -146,6 +146,22 @@ pbr: passReal
    | passNew
    ;
 
+pbr: PBREFERNCE brackets VARNAME brackets {
+	if(var_stack.top()==-1){
+		yyerror("can't pass by reference to non-variable.");
+		
+	}else{
+	if(symbol_table.find($3)==symbol_table.end()){
+		yyerror("can't pass from nonexistent variable.");
+	}else{
+		snprintf(tmpstr,TMPSTR_SIZE,"index[%d]=%d",var_stack.top(),symbol_table[$3]);
+	}
+	}
+}
+
+brackets: '[' | '{' | '_' | '}' | ']';
+
+
 passReal: PBREFERNCE '[' VARNAME ']' {$$=subjects_stack.top()+"="+$3;};
 passInt: PBREFERNCE '{' VARNAME '}' {$$=subjects_stack.top()+"="+$3;};
 passRaw: PBREFERNCE '_' VARNAME '_' {$$=subjects_stack.top()+"="+$3;};
@@ -167,8 +183,6 @@ print: printopts {$$="printObj="+subjects_stack.top();}
 printopts: PRINT
 	 | PRT EOPRT
 	 ;
-
-
 
 %%
 
