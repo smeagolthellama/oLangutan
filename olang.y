@@ -15,11 +15,14 @@ int yylex();
 unsigned int next_symbol=1;
 map<string,unsigned int> symbol_table; //when unallocated int is 0. Otherwise, it is a number referrring to a patch of memory.
 
+unsigned int nove_value;
+
 unsigned int line_counter=0;
 #define TMPSTR_SIZE 1024
 char tmpstr[TMPSTR_SIZE];
 
 stack<string> subjects_stack;
+stack<unsigned int> var_stack;
 %}
 
 %define api.value.type {string}
@@ -83,27 +86,27 @@ stmt: chStmt
     | nchStmt
     ;
 
-chStmt: lvalue chOps {$$=$2;subjects_stack.pop();};
+chStmt: lvalue chOps {$$=$2;subjects_stack.pop();var_stack.pop();};
 
-nchStmt: rvalue nchOps {$$=$2;subjects_stack.pop();}
+nchStmt: rvalue nchOps {$$=$2;subjects_stack.pop();var_stack.pop();}
        ;
 
 lvalue: var {subjects_stack.push($1);$$="";}
-      | print {subjects_stack.push("printObj");$$="";}
+      | print {subjects_stack.push("printObj");var_stack.push(-1);$$="";}
       ;
 
 
-rvalue: var {subjects_stack.push($1);$$=$1;}
-      | num {subjects_stack.push($1);$$=$1;}
-      | expression {subjects_stack.push($1);$$=$1;}
+rvalue: var {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
+      | num {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
+      | expression {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
       ;
 
-expression: rvalue ADD rvalue {$$=$1+"+"+$3;subjects_stack.pop();subjects_stack.pop();}
-	  | rvalue SUB rvalue {$$=$1+"-"+$3;subjects_stack.pop();subjects_stack.pop();}
-	  | rvalue MUL rvalue {$$=$1+"*"+$3;subjects_stack.pop();subjects_stack.pop();;}
-	  | rvalue DIV rvalue {$$=$1+"/"+$3;subjects_stack.pop();subjects_stack.pop();}
+expression: rvalue ADD rvalue {$$=$1+"+"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
+	  | rvalue SUB rvalue {$$=$1+"-"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
+	  | rvalue MUL rvalue {$$=$1+"*"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();;}
+	  | rvalue DIV rvalue {$$=$1+"/"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
 	  | '(' stmt ')' {$$=$1+$2+$3;}
-	  | '(' expression ')' {$$=$1+$2+$3;subjects_stack.pop();}
+	  | '(' expression ')' {$$=$1+$2+$3;subjects_stack.pop();var_stack.pop();}
 	  ;
 
 var: realVar {$$=$1;}
@@ -115,6 +118,7 @@ varname: VARNAME {
 	if(symbol_table.find($1)==symbol_table.end()){
 		symbol_table[ $1 ]=next_symbol++;
 	}
+	var_stack.push(symbol_table[$1]);
 	snprintf(tmpstr,TMPSTR_SIZE,"%d",symbol_table[$1]);
 	$$=string("var[index[")+tmpstr+"]]";
 
@@ -134,7 +138,7 @@ chOps: pbv
      | pbr
      ;
 
-pbv: PBVALUE rvalue {subjects_stack.pop();$$=subjects_stack.top()+"="+$2;;};
+pbv: PBVALUE rvalue {subjects_stack.pop();var_stack.pop();$$=subjects_stack.top()+"="+$2;;};
 
 pbr: passReal
    | passInt
@@ -146,7 +150,13 @@ passReal: PBREFERNCE '[' VARNAME ']' {$$=subjects_stack.top()+"="+$3;};
 passInt: PBREFERNCE '{' VARNAME '}' {$$=subjects_stack.top()+"="+$3;};
 passRaw: PBREFERNCE '_' VARNAME '_' {$$=subjects_stack.top()+"="+$3;};
 
-passNew: PBREFERNCE NEWREF {/*TODO*/$$=""; }
+passNew: PBREFERNCE NEWREF 
+       {
+	snprintf(tmpstr,TMPSTR_SIZE,"%d",var_stack.top());
+	$$=string("index[")+tmpstr+"]="; 
+	snprintf(tmpstr,TMPSTR_SIZE,"%d",nove_value++);
+	$$=$$+tmpstr;
+	}
 
 nchOps: print
       /* | conditional*/
