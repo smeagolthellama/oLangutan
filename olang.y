@@ -142,7 +142,7 @@ varname: VARNAME {
 	}
 	var_stack.push(symbol_table[$1]);
 	snprintf(tmpstr,TMPSTR_SIZE,"%d",symbol_table[$1]);
-	yyerror(string("notice: noticed variable:"+$1).c_str());
+//	yyerror(string("notice: noticed variable:"+$1).c_str());
 
 	$$="/*"+$1+"*/"+string("var[varindex[")+tmpstr+"]]";
 
