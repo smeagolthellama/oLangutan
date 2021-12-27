@@ -18,7 +18,7 @@ var_memory null;
 
 class myPrint{
 	public:
-		template<class T>
+/*		template<class T>
 		T operator=(T i){
 			cout<<i;
 			return i;
@@ -30,7 +30,7 @@ class myPrint{
 			cin>>t;
 			return t;
 		}
-
+*/
 } printObj;
 
 template<class T>
