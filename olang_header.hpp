@@ -46,4 +46,11 @@ void assign(char* t, myPrint printObj){
 	}
 }
 
+void assign(myPrint printObj, char* t){
+	cout<<t[0];
+	for(int i=1;i<8 && t[i];i++){
+		cout<<t[i];
+	}
+}
+
 int main(){
