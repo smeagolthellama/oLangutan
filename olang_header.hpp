@@ -17,20 +17,6 @@ map<long int,unsigned int> varindex;
 var_memory null;
 
 class myPrint{
-	public:
-/*		template<class T>
-		T operator=(T i){
-			cout<<i;
-			return i;
-		}
-
-		template<class T>
-		operator T() const{
-			T t;
-			cin>>t;
-			return t;
-		}
-*/
 } printObj;
 
 template<class T>
