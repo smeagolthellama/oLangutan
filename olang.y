@@ -121,7 +121,9 @@ lvalue: var {subjects_stack.push($1);$$="";}
 
 
 rvalue: var {subjects_stack.push($1);$$=$1;}
+      | NOT var {subjects_stack.push($2);$$=$1;}
       | num {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
+      | NOT num {subjects_stack.push($2);var_stack.push(-1);$$=$1;}
       | expression {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
       | printopts {subjects_stack.push("printObj");var_stack.push(-1);$$="printObj";}
       ;
@@ -136,7 +138,7 @@ expression: rvalue ADD rvalue {$$=$1+"+"+$3;subjects_stack.pop();var_stack.pop()
 	  | rvalue OR rvalue {$$=$1+"||"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
 	  | rvalue EQU rvalue {$$=$1+"=="+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
 	  | rvalue GRT rvalue {$$=$1+">"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
-	  | NOT rvalue {$$="!"+$2; subjects_stack.pop();var_stack.pop();}
+	  | NOT '(' rvalue ')' {$$="!("+$3+")"; subjects_stack.pop();var_stack.pop();}
 	  ;
 
 var: realVar {$$=$1;}
