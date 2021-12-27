@@ -137,7 +137,14 @@ num: NUMBER {$$=$1+"ll";}
 
 chOps: pbv
      | pbr
+     | '(' groupedOps ')'
      ;
+
+groupedOps: groupedOps SUBSTMT chOps {$$=$1+";"+$2;}
+	  | groupedOps SUBSTMT nchOps {$$=$1+";"+$2;}
+	  ;
+
+groupedNchOps: groupedNchOps SUBSTMT nchOps {$$=$1+";"+$2;}
 
 pbv: PBVALUE rvalue {subjects_stack.pop();var_stack.pop();$$=subjects_stack.top()+"="+$2;};
 
@@ -167,6 +174,7 @@ passNew: PBREFERNCE NEWREF
 
 nchOps: print
       /* | conditional*/
+      | '(' groupedNchOps ')'
       ;
 
 print: printopts {$$=string("printObj=")+subjects_stack.top();}
