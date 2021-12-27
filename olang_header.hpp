@@ -33,4 +33,26 @@ class myPrint{
 
 } printObj;
 
+template<class T>
+void assign(myPrint printObj, T t){
+	cout<<t;
+}
+
+template<class T>
+void assign(T t, myPrint printObj){
+	cin>>t;
+}
+
+void assign(char* t, myPrint printObj){
+	char c;
+	for(int i=0;i<8;i++){
+		cin.get(c);
+		if(c=='\n'){
+			t[i]=0;
+			break;
+		}
+		t[i]=c;	
+	}
+}
+
 int main(){
