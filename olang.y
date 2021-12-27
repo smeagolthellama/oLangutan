@@ -147,10 +147,6 @@ groupedOps: groupedOps SUBSTMT chOps {$$=$1+";"+$2;}
 	  | nchOps SUBSTMT groupedOps {$$=$1+";"+$2;}
 	  ;
 
-groupedNchOps: groupedNchOps SUBSTMT nchOps {$$=$1+";"+$2;}
-	     | nchOps 
-	     ;
-
 pbv: PBVALUE rvalue {subjects_stack.pop();var_stack.pop();$$=subjects_stack.top()+"="+$2;};
 
 pbr: PBREFERNCE brackets VARNAME brackets {
@@ -179,7 +175,6 @@ passNew: PBREFERNCE NEWREF
 
 nchOps: print
       /* | conditional*/
-      | '(' groupedNchOps ')'
       ;
 
 print: printopts {$$=string("printObj=")+subjects_stack.top();}
