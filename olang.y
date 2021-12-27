@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include <stack>
+#include <deque>
 
 using namespace std;
 
@@ -21,8 +22,25 @@ unsigned int line_counter=0;
 #define TMPSTR_SIZE 1024
 char tmpstr[TMPSTR_SIZE];
 
-stack<string> subjects_stack;
-stack<long int> var_stack;
+template<
+    class T,
+    class Container = std::deque<T>
+>
+class my_stack : public stack<T,Container>{
+public:
+	void pop(){
+		yyerror("popping from stack.");
+		stack<T,Container>::pop();
+	}
+
+	void push(const T& value){
+		yyerror("pushing onto stack.");
+		stack<T,Container>::push(value);
+	}
+};
+
+my_stack<string> subjects_stack;
+my_stack<long int> var_stack;
 %}
 
 %define api.value.type {string}
@@ -78,8 +96,8 @@ lines:
      $$=$1+$2;};
 
 line: stmt STATEMENT_END{
-     snprintf(tmpstr,TMPSTR_SIZE,"\n%d (%d):",line_counter++,yylineno);
-    $$=/*tmpstr+*/$1+";\n";}
+	$$=$1+";\n";
+    }
     | error {$$="";}
     ;
 
@@ -97,7 +115,7 @@ lvalue: var {subjects_stack.push($1);$$="";}
       ;
 
 
-rvalue: var {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
+rvalue: var {subjects_stack.push($1);$$=$1;}
       | num {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
       | expression {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
       | printopts {subjects_stack.push("printObj");var_stack.push(-1);$$="printObj";}
