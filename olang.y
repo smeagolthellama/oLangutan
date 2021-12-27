@@ -75,6 +75,8 @@ my_stack<long int> var_stack;
 %token DIV
 %token NOT
 
+%left EQU GRT
+%left AND OR 
 %left ADD SUB
 %left MUL DIV
 %right PBVALUE PBREFERNCE
