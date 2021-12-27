@@ -31,19 +31,6 @@ class myPrint{
 			return t;
 		}
 
-
-		operator char[]() const{
-			char t[8];
-			int i;
-			for(i=0;i<8;i++){
-				cin>>t[i];
-				if(t[i]=='\n'){
-					t[i]=0;
-				}
-				return strdup(t);
-			}
-			return strdup(t);
-		}
 } printObj;
 
 int main(){
