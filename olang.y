@@ -142,9 +142,13 @@ chOps: pbv
 
 groupedOps: groupedOps SUBSTMT chOps {$$=$1+";"+$2;}
 	  | groupedOps SUBSTMT nchOps {$$=$1+";"+$2;}
+	  | chOps
+	  | nchOps
 	  ;
 
 groupedNchOps: groupedNchOps SUBSTMT nchOps {$$=$1+";"+$2;}
+	     | nchOps 
+	     ;
 
 pbv: PBVALUE rvalue {subjects_stack.pop();var_stack.pop();$$=subjects_stack.top()+"="+$2;};
 
