@@ -12,7 +12,7 @@ all: olang.tab
 olang.tab: olang.tab.o olang.yy.c subject.cpp
 
 %.cpp: %.ola olang.tab
-	./olang.tab <$< >$@
+	./olang.tab $(OLAFLAGS) <$< >$@
 
 hello.o: hello.cpp olang_header.hpp
 
