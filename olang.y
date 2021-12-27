@@ -140,7 +140,7 @@ num: NUMBER {$$=$1+"ll";}
 
 chOps: pbv
      | pbr
-     | '(' groupedOps ')'
+     | '(' groupedOps ')' {$$=$2;}
      ;
 
 groupedOps: groupedOps SUBSTMT chOps {$$=$1+";"+$2;}
@@ -149,7 +149,11 @@ groupedOps: groupedOps SUBSTMT chOps {$$=$1+";"+$2;}
 	  | nchOps 
 	  ;
 
-pbv: PBVALUE rvalue {subjects_stack.pop();var_stack.pop();$$="assign("+subjects_stack.top()+","+$2+")";};
+pbv: PBVALUE rvalue 
+   {
+   	subjects_stack.pop();var_stack.pop();
+	$$="assign("+subjects_stack.top()+","+$2+")";
+   };
 
 pbr: PBREFERNCE brackets VARNAME brackets {
 	if(var_stack.top()==-1){
