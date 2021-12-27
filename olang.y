@@ -183,6 +183,11 @@ printopts: PRINT
 	 | PRT EOPRT
 	 ;
 
+and: AND {$$="&&";};
+or: OR {$$="||";};
+equ: EQU {$$="==";};
+grt: GRT {$$=">";};
+
 %%
 
 int main(int argc,char** argv){
