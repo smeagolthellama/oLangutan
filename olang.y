@@ -73,7 +73,6 @@ my_stack<long int> var_stack;
 %token SUB
 %token MUL
 %token DIV
-%token NOT
 
 %left EQU GRT
 %left AND OR 
