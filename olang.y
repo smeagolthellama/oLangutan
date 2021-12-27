@@ -177,7 +177,7 @@ nchOps: print
       /* | conditional*/
       ;
 
-print: printopts {$$=string("printObj=")+subjects_stack.top();}
+print: printopts {$$="assign(printObj,"+subjects_stack.top()+")";}
      ;
 printopts: PRINT
 	 | PRT EOPRT
