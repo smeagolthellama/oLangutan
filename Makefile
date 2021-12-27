@@ -14,6 +14,8 @@ olang.tab: olang.tab.o olang.yy.c subject.cpp
 	./olang.tab <$< >$@
 
 
+hello: hello.cpp olang_header.cpp
+
 %.c: %.tab.c
 	mv $^ $@
 
