@@ -57,6 +57,7 @@ stack<unsigned int> var_stack;
 %left ADD SUB
 %left MUL DIV
 %right PBVALUE PBREFERNCE
+%left SUBSTMT
 
 %start program
 
@@ -143,7 +144,7 @@ chOps: pbv
 groupedOps: groupedOps SUBSTMT chOps {$$=$1+";"+$2;}
 	  | groupedOps SUBSTMT nchOps {$$=$1+";"+$2;}
 	  | chOps
-//	  | nchOps
+	  | nchOps SUBSTMT groupedOps {$$=$1+";"+$2;}
 	  ;
 
 groupedNchOps: groupedNchOps SUBSTMT nchOps {$$=$1+";"+$2;}
