@@ -31,11 +31,13 @@ public:
 	void pop(){
 		yyerror("popping from stack.");
 		stack<T,Container>::pop();
+		cerr<<"stack depth is "<<stack<T,Container>::size()<<"\n";
 	}
 
 	void push(const T& value){
 		yyerror("pushing onto stack.");
 		stack<T,Container>::push(value);
+		cerr<<"stack depth is "<<stack<T,Container>::size()<<"\n";
 	}
 };
 
@@ -126,7 +128,7 @@ expression: rvalue ADD rvalue {$$=$1+"+"+$3;subjects_stack.pop();var_stack.pop()
 	  | rvalue MUL rvalue {$$=$1+"*"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();;}
 	  | rvalue DIV rvalue {$$=$1+"/"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
 	  | '(' stmt ')' {$$=$1+$2+$3;}
-	  | '(' expression ')' {$$=$1+$2+$3;subjects_stack.pop();var_stack.pop();}
+	  | '(' rvalue ')' {$$=$1+$2+$3;subjects_stack.pop();var_stack.pop();}
 	  ;
 
 var: realVar {$$=$1;}
@@ -161,8 +163,8 @@ chOps: pbv
      | '(' groupedOps ')' {$$=$2;}
      ;
 
-groupedOps: groupedOps SUBSTMT chOps {$$=$1+";"+$2;}
-	  | groupedOps SUBSTMT nchOps {$$=$1+";"+$2;}
+groupedOps: groupedOps SUBSTMT chOps {$$=$1+";"+$3;}
+	  | groupedOps SUBSTMT nchOps {$$=$1+";"+$3;}
 	  | chOps
 	  | nchOps 
 	  ;
@@ -170,7 +172,7 @@ groupedOps: groupedOps SUBSTMT chOps {$$=$1+";"+$2;}
 pbv: PBVALUE rvalue 
    {
    	subjects_stack.pop();var_stack.pop();
-	$$="assign("+subjects_stack.top()+","+$2+")";
+	$$="assign("+subjects_stack.top()+" , "+$2+")";
    };
 
 pbr: PBREFERNCE brackets VARNAME brackets {
