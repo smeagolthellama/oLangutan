@@ -122,7 +122,9 @@ varname: VARNAME {
 	}
 	var_stack.push(symbol_table[$1]);
 	snprintf(tmpstr,TMPSTR_SIZE,"%d",symbol_table[$1]);
-	$$=string("var[varindex[")+tmpstr+"]]";
+	yyerror(string("notice: noticed variable:"+$1).c_str());
+
+	$$="/*"+$1+"*/"+string("var[varindex[")+tmpstr+"]]";
 
 };
 
@@ -158,6 +160,7 @@ pbr: PBREFERNCE brackets VARNAME brackets {
 		yyerror("can't pass from nonexistent variable.");
 	}else{
 		snprintf(tmpstr,TMPSTR_SIZE,"varindex[%ld]=%d",var_stack.top(),symbol_table[$3]);
+		$$=tmpstr;
 	}
 	}
 }
@@ -192,6 +195,11 @@ grt: GRT {$$=">";};
 %%
 
 int main(int argc,char** argv){
+#ifdef YYDEBUG
+	if(argc>=1 && strcmp(argv[1],"-t")==0){
+		yydebug=1;
+	}
+#endif
 	yyparse();
 }
 
