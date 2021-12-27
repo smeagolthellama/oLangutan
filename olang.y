@@ -143,7 +143,7 @@ chOps: pbv
 groupedOps: groupedOps SUBSTMT chOps {$$=$1+";"+$2;}
 	  | groupedOps SUBSTMT nchOps {$$=$1+";"+$2;}
 	  | chOps
-	  | nchOps
+//	  | nchOps
 	  ;
 
 groupedNchOps: groupedNchOps SUBSTMT nchOps {$$=$1+";"+$2;}
