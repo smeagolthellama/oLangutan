@@ -6,6 +6,7 @@ CFLAGS:=--std=c++14 -g -Wall -Wextra
 
 all: olang.tab 
 	git commit -a
+	touch hello.ola
 	-make hello
 
 olang.tab: olang.tab.o olang.yy.c subject.cpp
@@ -13,8 +14,7 @@ olang.tab: olang.tab.o olang.yy.c subject.cpp
 %.cpp: %.ola olang.tab
 	./olang.tab <$< >$@
 
-
-hello: hello.cpp olang_header.hpp
+hello.o: hello.cpp olang_header.hpp
 
 %.c: %.tab.c
 	mv $^ $@
