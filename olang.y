@@ -29,15 +29,15 @@ template<
 class my_stack : public stack<T,Container>{
 public:
 	void pop(){
-		yyerror("popping from stack.");
+//		yyerror("popping from stack.");
 		stack<T,Container>::pop();
-		cerr<<"stack depth is "<<stack<T,Container>::size()<<"\n";
+//		cerr<<"stack depth is "<<stack<T,Container>::size()<<"\n";
 	}
 
 	void push(const T& value){
-		yyerror("pushing onto stack.");
+//		yyerror("pushing onto stack.");
 		stack<T,Container>::push(value);
-		cerr<<"stack depth is "<<stack<T,Container>::size()<<"\n";
+//		cerr<<"stack depth is "<<stack<T,Container>::size()<<"\n";
 	}
 };
 
