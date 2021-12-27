@@ -108,6 +108,16 @@ par {
 	return GRT;
 }
 
+nea+|¬ {
+	token("negation");
+	return NOT;
+}
+
+
+‽.* {
+	token("comment");
+} 
+
 "es"|"?" {
 	token("query end");
 	return EOQRY;
@@ -117,7 +127,7 @@ par {
 	token("comment");
 }
 
-nove {
+nove|£ {
 	token("new reference");
 	return NEWREF;
 }

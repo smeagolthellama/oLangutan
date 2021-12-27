@@ -73,6 +73,7 @@ my_stack<long int> var_stack;
 %token SUB
 %token MUL
 %token DIV
+%token NOT
 
 %left ADD SUB
 %left MUL DIV
@@ -129,6 +130,11 @@ expression: rvalue ADD rvalue {$$=$1+"+"+$3;subjects_stack.pop();var_stack.pop()
 	  | rvalue DIV rvalue {$$=$1+"/"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
 	  | '(' stmt ')' {$$=$1+$2+$3;}
 	  | '(' rvalue ')' {$$=$1+$2+$3;subjects_stack.pop();var_stack.pop();}
+	  | rvalue AND rvalue {$$=$1+"&&"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
+	  | rvalue OR rvalue {$$=$1+"||"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
+	  | rvalue EQU rvalue {$$=$1+"=="+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
+	  | rvalue GRT rvalue {$$=$1+">"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
+	  | NOT rvalue {$$="!"+$2; subjects_stack.pop();var_stack.pop();}
 	  ;
 
 var: realVar {$$=$1;}
@@ -209,12 +215,6 @@ print: printopts {$$="assign(printObj , "+subjects_stack.top()+")";}
 printopts: PRINT
 	 | PRT EOPRT
 	 ;
-
-and: AND {$$="&&";};
-or: OR {$$="||";};
-equ: EQU {$$="==";};
-grt: GRT {$$=">";};
-
 
 %%
 
