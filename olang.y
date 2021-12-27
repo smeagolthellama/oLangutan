@@ -196,7 +196,7 @@ grt: GRT {$$=">";};
 
 int main(int argc,char** argv){
 #ifdef YYDEBUG
-	if(argc>=1 && strcmp(argv[1],"-t")==0){
+	if(argc>1 && strcmp(argv[1],"-t")==0){
 		yydebug=1;
 	}
 #endif
