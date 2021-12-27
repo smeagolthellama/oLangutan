@@ -9,7 +9,7 @@ all: olang.tab
 	touch hello.ola
 	-make hello
 
-olang.tab: olang.tab.o olang.yy.c subject.cpp
+olang.tab: olang.tab.o olang.yy.c 
 
 %.cpp: %.ola olang.tab
 	./olang.tab $(OLAFLAGS) <$< >$@
