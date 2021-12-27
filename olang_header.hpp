@@ -39,8 +39,13 @@ void assign(myPrint printObj, T t){
 }
 
 template<class T>
-void assign(T t, myPrint printObj){
+void assign(T &t, myPrint printObj){
 	cin>>t;
+}
+
+template<class T1,class T2>
+void assign(T1& lhs,T2 rhs){
+	lhs=rhs;
 }
 
 void assign(char* t, myPrint printObj){
