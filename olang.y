@@ -22,7 +22,7 @@ unsigned int line_counter=0;
 char tmpstr[TMPSTR_SIZE];
 
 stack<string> subjects_stack;
-stack<unsigned int> var_stack;
+stack<long int> var_stack;
 %}
 
 %define api.value.type {string}
