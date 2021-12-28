@@ -176,7 +176,7 @@ nove|£ {
 	return NUMBER;
 }
 
--?[0-9]*\.[0-9]* {
+-?[0-9]*\.[0-9]+ {
 	token("valos");
 	yylval=yytext;
 	return DOUBLE;
