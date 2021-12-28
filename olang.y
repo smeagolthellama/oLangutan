@@ -173,7 +173,7 @@ var: realVar {$$=$1;}
 varname: VARNAME {
 	if(symbol_table.find($1)==symbol_table.end()){
 		symbol_table[ $1 ]=next_symbol++;
-		var_stack.push(-symbol_table[$1]);
+		var_stack.push(-((long int)symbol_table[$1]));
 	}else{
 		var_stack.push(symbol_table[$1]);
 	}
