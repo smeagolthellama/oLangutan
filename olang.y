@@ -89,6 +89,8 @@ int yyerror(const char* c);
 
 %start program
 
+%expect 2
+
 %%
 
 
