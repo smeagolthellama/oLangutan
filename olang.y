@@ -234,7 +234,7 @@ brackets: '[' | '{' | '_' | '}' | ']';
 
 passNew: PBREFERNCE NEWREF 
        {
-	long int varid=abs(var_stack.top());
+	long int varid=labs(var_stack.top());
 	var_stack.pop();
 	var_stack.push(varid);
 	snprintf(tmpstr,TMPSTR_SIZE,"%ld",varid);
