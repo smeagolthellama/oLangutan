@@ -113,6 +113,9 @@ line: stmt STATEMENT_END{
 
 stmt: chStmt
     | nchStmt
+    | conditional
+    | loop
+    | block
     ;
 
 chStmt: lvalue chOps {$$=$2;subjects_stack.pop();var_stack.pop();};
@@ -176,6 +179,8 @@ num: NUMBER {$$=$1+"ll";}
 chOps: pbv
      | pbr
      | '(' groupedOps ')' {$$=$2;}
+     | conditionalOps
+     | loopOps
      ;
 
 groupedOps: groupedOps SUBSTMT chOps {$$=$1+";"+$3;}
@@ -216,8 +221,25 @@ passNew: PBREFERNCE NEWREF
 	}
 
 nchOps: print
-      /* | conditional*/
       ;
+
+conditional: IFSTART expression EOQRY stmt {$$="if("+$2+"){\n"+$4+";\n}\n";}
+           | IFSTART expression EOQRY stmt ELSE stmt {$$="if("+$2+"){\n"+$4+";\n}else{\n"+$6+";\n}";}
+           | IFSTART expression EOQRY SUBSTMT ELSE stmt {$$="if(! ("+$2+")){\n"+$6+";\n}";}
+	   ;
+
+conditionalOps: IFSTART expression EOQRY chOps {$$="if("+$2+"){\n"+$4+";\n}\n";}
+	      | IFSTART expression EOQRY chOps ELSE chOps {$$="if("+$2+"){\n"+$4+";\n}else{\n"+$6+";\n}";}
+	      | IFSTART expression EOQRY SUBSTMT ELSE chOps {$$="if(! ("+$2+")){\n"+$6+";\n}";}
+	      ;
+
+loop: WHILESTART expression EOQRY stmt {$$="while("+$2+"){\n"+$4+";\n}\n";}
+       ;
+
+loopOps: WHILESTART expression EOQRY chOps {$$="while("+$2+"){\n"+$4+";\n}\n";}
+       ;
+
+block: BLK lines EOBLK {$$="{"+$2+"}";};
 
 print: printopts {$$="assign(printObj , "+subjects_stack.top()+")";}
      ;
