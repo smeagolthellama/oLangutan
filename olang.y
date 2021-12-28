@@ -118,7 +118,14 @@ stmt: chStmt
     | conditional
     | loop
     | block
+    | printline
     ;
+
+printline: PRT rvalue EOPRT {
+	$$="assign(printObj , "+$2 +")";
+	subjects_stack.pop();
+	var_stack.pop();
+}
 
 chStmt: lvalue chOps {$$=$2;subjects_stack.pop();var_stack.pop();};
 
@@ -218,7 +225,7 @@ passNew: PBREFERNCE NEWREF
        {
 	snprintf(tmpstr,TMPSTR_SIZE,"%ld",var_stack.top());
 	$$=string("varindex[")+tmpstr+"]="; 
-	snprintf(tmpstr,TMPSTR_SIZE,"%d",nove_value++);
+	snprintf(tmpstr,TMPSTR_SIZE,"varindex[%d]",nove_value++);
 	$$=$$+tmpstr+";var.push_back(null);";
 	}
 

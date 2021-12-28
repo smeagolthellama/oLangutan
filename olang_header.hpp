@@ -20,21 +20,24 @@ class myPrint{
 } printObj;
 
 template<class T>
-void assign(myPrint printObj, T t){
+T& assign(myPrint printObj, T& t){
 	cout<<t;
+	return t;
 }
 
 template<class T>
-void assign(T &t, myPrint printObj){
+myPrint assign(T &t, myPrint printObj){
 	cin>>t;
+	return printObj;
 }
 
 template<class T1,class T2>
-void assign(T1& lhs,T2 rhs){
+T2 assign(T1& lhs,T2 rhs){
 	lhs=rhs;
+	return rhs;
 }
 
-void assign(char* t, myPrint printObj){
+myPrint assign(char* t, myPrint printObj){
 	char c;
 	for(int i=0;i<8;i++){
 		cin.get(c);
@@ -44,6 +47,7 @@ void assign(char* t, myPrint printObj){
 		}
 		t[i]=c;	
 	}
+	return printObj;
 }
 
 void assign(myPrint printObj, char* t){

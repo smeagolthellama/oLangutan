@@ -21,7 +21,7 @@ se {var} isto {ref} ? irven( test equality of ref and var. because they are core
 	senek -{ _ref_} .
 
 ke {var} majo 0 es e 
-	{var}<- e {var} neken 1 . par.
+	{var}<- (e {var} neken 1 . par).
 	se {var} = 14 es;
 	senek -{ {var}}.
 par.
