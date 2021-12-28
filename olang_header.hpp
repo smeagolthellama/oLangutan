@@ -50,6 +50,13 @@ myPrint assign(char* t, myPrint printObj){
 	return printObj;
 }
 
+char *assign(char lhs[8],char rhs[8]){
+	for(int i=0;i<8;i++){
+		lhs[i]=rhs[i];
+	}
+	return rhs;
+}
+
 void assign(myPrint printObj, char* t){
 	cout<<t[0];
 	for(int i=1;i<8 && t[i];i++){
