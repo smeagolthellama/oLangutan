@@ -13,3 +13,11 @@ readwritetest
 sixliner
 test
 threeliner
+bork.cpp
+hello.cpp
+oneliner.cpp
+readtest.cpp
+sixliner.cpp
+test.cpp
+threeliner.cpp
+*.o
