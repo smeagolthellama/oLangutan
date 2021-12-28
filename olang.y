@@ -118,7 +118,7 @@ lines:
      $$=$1+$2;};
 
 line: stmt STATEMENT_END{
-    	snprintf(tmpstr,TMPSTR_SIZE,";LINENO=%d\n;",LINENO);
+    	snprintf(tmpstr,TMPSTR_SIZE,";LINENO=%d;\n",LINENO);
 	$$=$1+tmpstr;
     }
     | error {$$="";}
