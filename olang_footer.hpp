@@ -4,6 +4,6 @@
 }catch(const exception& ex){
 	cerr<<"On line "<<LINENO<<": Strange exception thrown. Please contact the language's developer(s), as this was not forseen as a possibility. ex.what:"<<ex.what()<<'\n';
 }catch(...){
-	cerr<<"On line "<LINENO<<": What on earth did you do? This shouldn't be remotely possible. I have no idea what to do. Aborting.\n";
+	cerr<<"On line "<<LINENO<<": What on earth did you do? This shouldn't be remotely possible. I have no idea what to do. Aborting.\n";
 }
 }
