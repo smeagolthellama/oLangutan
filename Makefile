@@ -8,7 +8,7 @@ all: olang.tab
 	git commit -a
 	touch hello.ola
 	-make hello
-	-make sixlner
+	-make sixliner
 
 olang.tab: olang.tab.o olang.yy.c 
 
