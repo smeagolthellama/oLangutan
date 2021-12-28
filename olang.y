@@ -45,6 +45,12 @@ my_stack<string> subjects_stack;
 my_stack<long int> var_stack;
 %}
 
+%code requires{
+#include <string>
+using namespace std;
+int yyerror(const char* c);
+}
+
 %define api.value.type {string}
 
 %token STATEMENT_END

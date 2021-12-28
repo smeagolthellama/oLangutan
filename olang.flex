@@ -1,10 +1,9 @@
 %{
 #define VARTYPES
 #include <stdio.h>
-#include "subject.hpp"
 #include "olang.tab.h"
 
-vartypes yyvartype;
+//vartypes yyvartype;
 
 int oszlop=0;
 int elozosor=0;
