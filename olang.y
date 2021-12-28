@@ -43,6 +43,9 @@ public:
 
 my_stack<string> subjects_stack;
 my_stack<long int> var_stack;
+
+extern unsigned int LINENO;
+
 %}
 
 %code requires{
@@ -115,7 +118,8 @@ lines:
      $$=$1+$2;};
 
 line: stmt STATEMENT_END{
-	$$=$1+";LINENO++;\n";
+    	snprintf(tmpstr,TMPSTR_SIZE,";LINENO=%d\n;",LINENO);
+	$$=$1+tmpstr;
     }
     | error {$$="";}
     ;

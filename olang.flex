@@ -17,6 +17,7 @@ void token(const char* name){
 	oszlop+=yyleng;
 }
 
+unsigned int LINENO=1;
 %}
 
 %x VAR
@@ -24,7 +25,11 @@ void token(const char* name){
 
 %%
 
-[ \t\n\r] {}
+[ \t] {}
+
+[\n\r]* {
+	LINENO++;
+}
 
 [\[{_] {
 	BEGIN(VAR);
