@@ -2,13 +2,16 @@ CC:= clang++
 LEX:=flex
 YACC:=bison
 YFLAGS:=-dtvg 
-CFLAGS:=--std=c++14 -g -Wall -Wextra
+CFLAGS:=--std=c++14 -g -Wall -Wextra 
+CPPFLAGS:=-I.
 
 all: olang.tab 
 	git commit -a
 	touch hello.ola
 	-make hello
 	-make sixliner
+	-make demos/demo1
+	-make demos/demo2
 
 olang.tab: olang.tab.o olang.yy.c 
 
