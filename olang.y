@@ -222,7 +222,7 @@ pbr: PBREFERNCE brackets VARNAME brackets {
 		yyerror("can't pass from nonexistent variable.");
 		YYERROR;
 	}
-	int varid=abs(var_stack.top());
+	long int varid=abs(var_stack.top());
 	var_stack.pop();
 	var_stack.push(varid);
 	snprintf(tmpstr,TMPSTR_SIZE,"varindex[%ld]=varindex[%d]",varid,symbol_table[$3]);
@@ -234,7 +234,7 @@ brackets: '[' | '{' | '_' | '}' | ']';
 
 passNew: PBREFERNCE NEWREF 
        {
-	int varid=abs(var_stack.top());
+	long int varid=abs(var_stack.top());
 	var_stack.pop();
 	var_stack.push(varid);
 	snprintf(tmpstr,TMPSTR_SIZE,"%ld",varid);
