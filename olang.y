@@ -216,7 +216,7 @@ pbr: PBREFERNCE brackets VARNAME brackets {
 	if(symbol_table.find($3)==symbol_table.end()){
 		yyerror("can't pass from nonexistent variable.");
 	}else{
-		snprintf(tmpstr,TMPSTR_SIZE,"varindex[%ld]=%d",var_stack.top(),symbol_table[$3]);
+		snprintf(tmpstr,TMPSTR_SIZE,"varindex[%ld]=varindex[%d]",var_stack.top(),symbol_table[$3]);
 		$$=tmpstr;
 	}
 	}
@@ -229,7 +229,7 @@ passNew: PBREFERNCE NEWREF
        {
 	snprintf(tmpstr,TMPSTR_SIZE,"%ld",var_stack.top());
 	$$=string("varindex[")+tmpstr+"]="; 
-	snprintf(tmpstr,TMPSTR_SIZE,"varindex[%d]",nove_value++);
+	snprintf(tmpstr,TMPSTR_SIZE,"%d",nove_value++);
 	$$=$$+tmpstr+";var.push_back(null);";
 	}
 
