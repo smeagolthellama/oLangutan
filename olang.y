@@ -54,6 +54,7 @@ inline int yyerror(const char* c){
 }
 #define NON_VARIABLE 0
 #define TESTVAR if(var_stack.top()<0){yyerror("Cannot use variable that has never been allocated!");YYERROR;}
+#define ABS(a) (((a)>0)?(a):(-(a)))
 }
 
 %define api.value.type {string}
@@ -222,7 +223,7 @@ pbr: PBREFERNCE brackets VARNAME brackets {
 		yyerror("can't pass from nonexistent variable.");
 		YYERROR;
 	}
-	long int varid=abs(var_stack.top());
+	long int varid=ABS(var_stack.top());
 	var_stack.pop();
 	var_stack.push(varid);
 	snprintf(tmpstr,TMPSTR_SIZE,"varindex[%ld]=varindex[%d]",varid,symbol_table[$3]);
@@ -234,7 +235,7 @@ brackets: '[' | '{' | '_' | '}' | ']';
 
 passNew: PBREFERNCE NEWREF 
        {
-	long int varid=labs(var_stack.top());
+	long int varid=ABS(var_stack.top());
 	var_stack.pop();
 	var_stack.push(varid);
 	snprintf(tmpstr,TMPSTR_SIZE,"%ld",varid);
