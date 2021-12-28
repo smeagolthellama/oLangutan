@@ -14,7 +14,7 @@ int yyerror(const char* c);
 int yylex();
 
 unsigned int next_symbol=1;
-map<string,unsigned int> symbol_table; //when unallocated int is 0. Otherwise, it is a number referrring to a patch of memory.
+map<string,unsigned int> symbol_table;
 
 unsigned int nove_value;
 
@@ -52,6 +52,8 @@ inline int yyerror(const char* c){
 	fprintf(stderr,"On line %d: %s\n",yylineno ,c);
 	return 0;
 }
+#define NON_VARIABLE 0
+#define TESTVAR if(var_stack.top()<0){yyerror("Cannot use variable that has never been allocated!");YYERROR;}
 }
 
 %define api.value.type {string}
@@ -137,16 +139,16 @@ nchStmt: rvalue nchOps {$$=$2;subjects_stack.pop();var_stack.pop();}
        ;
 
 lvalue: var {subjects_stack.push($1);$$="";}
-      | printopts {subjects_stack.push("printObj");var_stack.push(-1);$$="";}
+      | printopts {subjects_stack.push("printObj");var_stack.push(NON_VARIABLE);$$="";}
       ;
 
 
-rvalue: var {subjects_stack.push($1);$$=$1;}
-      | NOT var {subjects_stack.push($2);$$="!("+$2+")";}
-      | num {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
-      | NOT num {subjects_stack.push($2);var_stack.push(-1);$$="!("+$2+")";}
-      | expression {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
-      | printopts {subjects_stack.push("printObj");var_stack.push(-1);$$="printObj";}
+rvalue: var {subjects_stack.push($1);TESTVAR;$$=$1;}
+      | NOT var {subjects_stack.push($2);TESTVAR;$$="!("+$2+")";}
+      | num {subjects_stack.push($1);var_stack.push(NON_VARIABLE);$$=$1;}
+      | NOT num {subjects_stack.push($2);var_stack.push(NON_VARIABLE);$$="!("+$2+")";}
+      | expression {subjects_stack.push($1);var_stack.push(NON_VARIABLE);$$=$1;}
+      | printopts {subjects_stack.push("printObj");var_stack.push(NON_VARIABLE);$$="printObj";}
       ;
 
 expression: rvalue ADD rvalue {$$=$1+"+"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
@@ -170,8 +172,10 @@ var: realVar {$$=$1;}
 varname: VARNAME {
 	if(symbol_table.find($1)==symbol_table.end()){
 		symbol_table[ $1 ]=next_symbol++;
+		var_stack.push(-symbol_table[$1]);
+	}else{
+		var_stack.push(symbol_table[$1]);
 	}
-	var_stack.push(symbol_table[$1]);
 	snprintf(tmpstr,TMPSTR_SIZE,"%d",symbol_table[$1]);
 //	yyerror(string("notice: noticed variable:"+$1).c_str());
 
@@ -204,22 +208,25 @@ groupedOps: groupedOps SUBSTMT chOps {$$=$1+";"+$3;}
 
 pbv: PBVALUE rvalue 
    {
+   	TESTVAR;
    	subjects_stack.pop();var_stack.pop();
 	$$="assign("+subjects_stack.top()+" , "+$2+")";
    };
 
 pbr: PBREFERNCE brackets VARNAME brackets {
-	if(var_stack.top()==-1){
+	if(var_stack.top()==NON_VARIABLE){
 		yyerror("can't pass by reference to non-variable.");
-		
-	}else{
+		YYERROR;		
+	}
 	if(symbol_table.find($3)==symbol_table.end()){
 		yyerror("can't pass from nonexistent variable.");
-	}else{
-		snprintf(tmpstr,TMPSTR_SIZE,"varindex[%ld]=varindex[%d]",var_stack.top(),symbol_table[$3]);
-		$$=tmpstr;
+		YYERROR;
 	}
-	}
+	int varid=abs(var_stack.top());
+	var_stack.pop();
+	var_stack.push(varid);
+	snprintf(tmpstr,TMPSTR_SIZE,"varindex[%ld]=varindex[%d]",varid,symbol_table[$3]);
+	$$=tmpstr;
 }
    | passNew;
 
@@ -227,11 +234,15 @@ brackets: '[' | '{' | '_' | '}' | ']';
 
 passNew: PBREFERNCE NEWREF 
        {
-	snprintf(tmpstr,TMPSTR_SIZE,"%ld",var_stack.top());
+	int varid=abs(var_stack.top());
+	var_stack.pop();
+	var_stack.push(varid);
+	snprintf(tmpstr,TMPSTR_SIZE,"%ld",varid);
 	$$=string("varindex[")+tmpstr+"]="; 
 	snprintf(tmpstr,TMPSTR_SIZE,"%d",nove_value++);
 	$$=$$+tmpstr+";var.push_back(null);";
 	}
+	;
 
 nchOps: print
       ;
