@@ -1,7 +1,7 @@
 CC:= clang++
 LEX:=flex
 YACC:=bison
-YFLAGS:=-dtvg -Wcounterexamples
+YFLAGS:=-dtvg 
 CFLAGS:=--std=c++14 -g -Wall -Wextra
 
 all: olang.tab 
