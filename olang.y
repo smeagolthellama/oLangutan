@@ -106,7 +106,7 @@ program: lines {
        };
 
 lines: 
-     %empty
+     %empty {$$="";}
      | lines line 
      {
      $$=$1+$2;};
@@ -142,9 +142,9 @@ lvalue: var {subjects_stack.push($1);$$="";}
 
 
 rvalue: var {subjects_stack.push($1);$$=$1;}
-      | NOT var {subjects_stack.push($2);$$=$1;}
+      | NOT var {subjects_stack.push($2);$$="!("+$2+")";}
       | num {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
-      | NOT num {subjects_stack.push($2);var_stack.push(-1);$$=$1;}
+      | NOT num {subjects_stack.push($2);var_stack.push(-1);$$="!("+$2+")";}
       | expression {subjects_stack.push($1);var_stack.push(-1);$$=$1;}
       | printopts {subjects_stack.push("printObj");var_stack.push(-1);$$="printObj";}
       ;
@@ -153,8 +153,8 @@ expression: rvalue ADD rvalue {$$=$1+"+"+$3;subjects_stack.pop();var_stack.pop()
 	  | rvalue SUB rvalue {$$=$1+"-"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
 	  | rvalue MUL rvalue {$$=$1+"*"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();;}
 	  | rvalue DIV rvalue {$$=$1+"/"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
-	  | '(' stmt ')' {$$=$1+$2+$3;}
-	  | '(' rvalue ')' {$$=$1+$2+$3;subjects_stack.pop();var_stack.pop();}
+	  | '(' stmt ')' {$$="("+$2+")";}
+	  | '(' rvalue ')' {$$="("+$2+")";subjects_stack.pop();var_stack.pop();}
 	  | rvalue AND rvalue {$$=$1+"&&"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
 	  | rvalue OR rvalue {$$=$1+"||"+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
 	  | rvalue EQU rvalue {$$=$1+"=="+$3;subjects_stack.pop();var_stack.pop();subjects_stack.pop();var_stack.pop();}
@@ -252,7 +252,7 @@ loop: WHILESTART expression EOQRY stmt {$$="while("+$2+"){\n"+$4+";\n}\n";}
 loopOps: WHILESTART expression EOQRY chOps {$$="while("+$2+"){\n"+$4+";\n}\n";}
        ;
 
-block: BLK lines EOBLK {$$="{"+$2+"}";};
+block: BLK lines EOBLK {$$=""+$2+"";};
 
 print: printopts {$$="assign(printObj , "+subjects_stack.top()+")";}
      ;
