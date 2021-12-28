@@ -17,7 +17,7 @@ text
 
 se {var} isto {ref} ? irven( test equality of ref and var. because they are coreferences, this will result in true.)
 
-	{ref} <= nove. irven( if ref is the same as var, redeclare ref. var is unaffected.)
+	{ref} <= nove irven( if ref is the same as var, redeclare ref. var is unaffected.)
 	senek -{ _ref_} .
 
 ke {var} majo 0 es e 
