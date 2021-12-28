@@ -57,4 +57,7 @@ void assign(myPrint printObj, char* t){
 	}
 }
 
+long int LINENO;
+
 int main(){
+	try{

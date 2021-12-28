@@ -105,7 +105,7 @@ program: lines {
        /*TODO: output program.*/
        cout<<"#include \"olang_header.hpp\"\n\n";
        cout<<$1;
-       cout<<"}\n";
+       cout<<"#include \"olang_footer.hpp\"\n";
        };
 
 lines: 
@@ -115,7 +115,7 @@ lines:
      $$=$1+$2;};
 
 line: stmt STATEMENT_END{
-	$$=$1+";\n";
+	$$=$1+";LINENO++;\n";
     }
     | error {$$="";}
     ;
