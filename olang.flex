@@ -77,7 +77,7 @@ e {
 	return BLK;
 }
 
-par {
+par|"ə" {
 	token("end code block");
 	return EOBLK;
 }
