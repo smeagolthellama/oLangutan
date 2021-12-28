@@ -180,7 +180,7 @@ varname: VARNAME {
 	snprintf(tmpstr,TMPSTR_SIZE,"%d",symbol_table[$1]);
 //	yyerror(string("notice: noticed variable:"+$1).c_str());
 
-	$$="/*"+$1+"*/"+string("var[varindex[")+tmpstr+"]]";
+	$$="/*"+$1+"*/"+string("var.at(varindex[")+tmpstr+"])";
 
 };
 
