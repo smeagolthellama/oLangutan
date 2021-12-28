@@ -34,7 +34,7 @@ irven(4<-4 .
 5<=noven.)
 
 {var} (<- {ref} - 4; token).
-{a}<-{b}<-{c}.
+{a}<-({b}<-{c}).
 
 irven(
 	var.become<ref.subtract<4>>.output<>;
