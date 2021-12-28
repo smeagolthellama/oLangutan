@@ -180,7 +180,7 @@ varname: VARNAME {
 	snprintf(tmpstr,TMPSTR_SIZE,"%d",symbol_table[$1]);
 //	yyerror(string("notice: noticed variable:"+$1).c_str());
 
-	$$="/*"+$1+"*/"+string("var.at(varindex[")+tmpstr+"])";
+	$$="/*"+$1+"*/"+string("var.at(varindex.at(")+tmpstr+"))";
 
 };
 
@@ -226,7 +226,7 @@ pbr: PBREFERNCE brackets VARNAME brackets {
 	long int varid=ABS(var_stack.top());
 	var_stack.pop();
 	var_stack.push(varid);
-	snprintf(tmpstr,TMPSTR_SIZE,"varindex[%ld]=varindex[%d]",varid,symbol_table[$3]);
+	snprintf(tmpstr,TMPSTR_SIZE,"varindex.at(%ld)=varindex.at(%d)",varid,symbol_table[$3]);
 	$$=tmpstr;
 }
    | passNew;
@@ -239,7 +239,7 @@ passNew: PBREFERNCE NEWREF
 	var_stack.pop();
 	var_stack.push(varid);
 	snprintf(tmpstr,TMPSTR_SIZE,"%ld",varid);
-	$$=string("varindex[")+tmpstr+"]="; 
+	$$=string("varindex.at(")+tmpstr+")="; 
 	snprintf(tmpstr,TMPSTR_SIZE,"%d",nove_value++);
 	$$=$$+tmpstr+";var.push_back(null);";
 	}
