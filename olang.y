@@ -48,10 +48,14 @@ my_stack<long int> var_stack;
 %code requires{
 #include <string>
 using namespace std;
-int yyerror(const char* c);
+inline int yyerror(const char* c){
+	fprintf(stderr,"On line %d: %s\n",yylineno ,c);
+	return 0;
+}
 }
 
 %define api.value.type {string}
+%define parse.error verbose
 
 %token STATEMENT_END
 %token VARNAME
@@ -267,7 +271,3 @@ int main(int argc,char** argv){
 	yyparse();
 }
 
-int yyerror(const char* c){
-	fprintf(stderr,"on line %d: %s\n",yylineno ,c);
-	return 0;
-}
